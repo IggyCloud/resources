@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: k6-scripts
+  namespace: k6-loadtest
+data: {}
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: k6-load-test
+  namespace: k6-loadtest
+spec:
+  template:
+    spec:
+      containers:
+      - name: k6
+        image: grafana/k6:latest
+        command: ["k6"]
+        args: ["run", "-o", "experimental-prometheus-rw", "/scripts/catalog-api-open-model-test.js"]
+        env:
+        - name: K6_PROMETHEUS_RW_SERVER_URL
+          value: "http://prometheus-service:9090/api/v1/write"
+        - name: K6_PROMETHEUS_RW_TREND_STATS
+          value: "p(95),p(99),min,max"
+        - name: K6_PROMETHEUS_RW_PUSH_INTERVAL
+          value: "5s"
+        - name: K6_PROMETHEUS_RW_STALE_MARKERS
+          value: "true"
+        volumeMounts:
+        - name: k6-scripts
+          mountPath: /scripts
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "1500m"
+          limits:
+            memory: "4Gi"
+            cpu: "3000m"
+      volumes:
+      - name: k6-scripts
+        configMap:
+          name: k6-scripts
+      restartPolicy: Never
+  backoffLimit: 3
