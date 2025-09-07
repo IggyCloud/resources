@@ -7,7 +7,8 @@
       "Bash(kubectl describe:*)",
       "Bash(kubectl top:*)",
       "Bash(aspirate:*)",
-      "Read(C:\\Users\\Sebastian\\source\\repos\\IggyCloud\\eShop\\src\\eShop.AppHost/**)"
+      "Read(C:\\Users\\Sebastian\\source\\repos\\IggyCloud\\eShop\\src\\eShop.AppHost/**)",
+      "Read(//c/Users/Sebastian/source/repos/IggyCloud/eShop/**)"
     ],
     "deny": [],
     "ask": []
