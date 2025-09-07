@@ -2,7 +2,12 @@
   "permissions": {
     "allow": [
       "Bash(kubectl get:*)",
-      "Bash(kubectl logs:*)"
+      "Bash(kubectl logs:*)",
+      "Bash(kubectl delete:*)",
+      "Bash(kubectl describe:*)",
+      "Bash(kubectl top:*)",
+      "Bash(aspirate:*)",
+      "Read(C:\\Users\\Sebastian\\source\\repos\\IggyCloud\\eShop\\src\\eShop.AppHost/**)"
     ],
     "deny": [],
     "ask": []

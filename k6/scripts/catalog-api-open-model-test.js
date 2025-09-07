@@ -7,13 +7,13 @@ export const options = {
       executor: 'ramping-arrival-rate',
       timeUnit: '1s',
       startRate: 50,
-      preAllocatedVUs: 200,
+      preAllocatedVUs: 100,
       maxVUs: 1000,
       stages: [
         { duration: '30s', target: 100 }, // ramp to 100 RPS
-        { duration: '1min', target: 100 }, // hold
+        { duration: '1m', target: 100 }, // hold
         { duration: '30s', target: 200 }, // ramp to 200 RPS
-        { duration: '1min', target: 200 }, // hold
+        { duration: '1m', target: 200 }, // hold
         { duration: '30s', target: 0 },  // ramp down
       ],
       exec: 'hitItems',
