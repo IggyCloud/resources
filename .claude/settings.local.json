@@ -8,7 +8,16 @@
       "Bash(kubectl top:*)",
       "Bash(aspirate:*)",
       "Read(C:\\Users\\Sebastian\\source\\repos\\IggyCloud\\eShop\\src\\eShop.AppHost/**)",
-      "Read(//c/Users/Sebastian/source/repos/IggyCloud/eShop/**)"
+      "Read(//c/Users/Sebastian/source/repos/IggyCloud/eShop/**)",
+      "Bash(./deploy.sh)",
+      "Bash(kubectl:*)",
+      "Bash(./run-test.sh:*)",
+      "WebSearch",
+      "WebFetch(domain:azure.microsoft.com)",
+      "Read(//c/Users/Sebastian/source/repos/IggyCloud/**)",
+      "Bash(k6 run:*)",
+      "Bash(timeout 120s k6 run catalog-api-open-model-test.js)",
+      "Bash(timeout:*)"
     ],
     "deny": [],
     "ask": []

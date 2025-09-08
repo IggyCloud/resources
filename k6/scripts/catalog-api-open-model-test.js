@@ -6,28 +6,30 @@ export const options = {
     items_open_model: {
       executor: 'ramping-arrival-rate',
       timeUnit: '1s',
-      startRate: 50,
-      preAllocatedVUs: 100,
-      maxVUs: 1000,
+      startRate: 150,
+      preAllocatedVUs: 300,
+      maxVUs: 800,
       stages: [
-        { duration: '30s', target: 100 }, // ramp to 100 RPS
-        { duration: '1m', target: 100 }, // hold
-        { duration: '30s', target: 200 }, // ramp to 200 RPS
-        { duration: '1m', target: 200 }, // hold
-        { duration: '30s', target: 0 },  // ramp down
+        { duration: '20s', target: 1000 }, // Start at 1000 RPS
+        { duration: '60s', target: 1000 }, // hold at 1000 RPS
+        { duration: '30s', target: 1500 }, // ramp to 1500 RPS
+        { duration: '60s', target: 1500 }, // hold at 1500 RPS
+        { duration: '30s', target: 2000 }, // BREAKING POINT: 2000 RPS
+        { duration: '60s', target: 2000 }, // hold at 2000 RPS - should break
+        { duration: '30s', target: 0 },    // ramp down
       ],
       exec: 'hitItems',
     },
   },
   thresholds: {
-    http_req_failed:   ['rate<0.02'],
-    http_req_duration: ['p(90)<300','p(99)<900'],
+    http_req_failed:   ['rate<0.01'],    // Production-realistic: 1% error rate
+    http_req_duration: ['p(95)<500'],    // Production-realistic: 500ms max
   },
   summaryTrendStats: ['avg','min','med','p(90)','p(95)','p(99)','max'],
 };
 
 const BASE = 'http://catalog-api.default.svc.cluster.local:8080';
-const URL  = `${BASE}/api/catalog/items?api-version=1.0&limit=20`;
+const URL  = `${BASE}/api/catalog/items?api-version=1.0`;
 
 export function hitItems() {
   const res = http.get(URL, { headers: { Accept: 'application/json' } });
