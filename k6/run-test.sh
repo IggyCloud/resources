@@ -33,7 +33,7 @@ sed "s|/scripts/catalog-api-open-model-test.js|/scripts/$SCRIPT_NAME|g" k8s/k6-j
 # Create new k6 job
 kubectl apply -f /tmp/k6-job-temp.yaml
 
-# Clean up temporary file
+# Clean up temporary fileznajdz 
 rm /tmp/k6-job-temp.yaml
 
 echo "K6 test started. Monitor with:"
