@@ -27,7 +27,8 @@
       "Bash(tree:*)",
       "Bash(./observability/scripts/cleanup-observability.sh:*)",
       "Bash(./Aspir8.sh:*)",
-      "Bash(./observability/scripts/post-deploy-monitoring.sh:*)"
+      "Bash(./observability/scripts/post-deploy-monitoring.sh:*)",
+      "Bash(./k6/run-test.sh:*)"
     ],
     "deny": [],
     "ask": []
