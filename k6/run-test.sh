@@ -20,8 +20,9 @@ fi
 
 echo "Running K6 test with script: $SCRIPT_NAME"
 
-# Delete existing job and configmap
+# Delete existing job, service and configmap
 kubectl delete job k6-load-test -n k6-loadtest --ignore-not-found=true
+kubectl delete service k6-metrics -n k6-loadtest --ignore-not-found=true
 kubectl delete configmap k6-scripts -n k6-loadtest --ignore-not-found=true
 
 # Create ConfigMap from scripts directory
@@ -30,7 +31,8 @@ kubectl create configmap k6-scripts --from-file=scripts/ -n k6-loadtest
 # Create temporary job file with the script name substituted
 sed "s|/scripts/catalog-api-open-model-test.js|/scripts/$SCRIPT_NAME|g" k8s/k6-job.yaml > /tmp/k6-job-temp.yaml
 
-# Create new k6 job
+# Create new k6 service and job
+kubectl apply -f k8s/k6-service.yaml
 kubectl apply -f /tmp/k6-job-temp.yaml
 
 # Clean up temporary fileznajdz 
