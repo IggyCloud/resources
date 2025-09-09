@@ -1,0 +1,52 @@
+# Consolidated Grafana configuration with both k6 and API monitoring dashboards
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-datasources
+  namespace: default
+data:
+  datasource.yml: |
+    apiVersion: 1
+    datasources:
+      - name: Prometheus
+        type: prometheus
+        access: proxy
+        url: http://prometheus:9090
+        isDefault: true
+        editable: true
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboards-config
+  namespace: default
+data:
+  dashboard.yml: |
+    apiVersion: 1
+    providers:
+      - name: 'k6-performance'
+        orgId: 1
+        folder: 'K6 Performance'
+        type: file
+        disableDeletion: false
+        updateIntervalSeconds: 10
+        allowUiUpdates: true
+        options:
+          path: /etc/grafana/dashboards/k6
+      - name: 'api-monitoring'
+        orgId: 1
+        folder: 'API Monitoring'
+        type: file
+        disableDeletion: false
+        updateIntervalSeconds: 10
+        allowUiUpdates: true
+        options:
+          path: /etc/grafana/dashboards/api
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-k6-dashboard
+  namespace: default
+data:
+  k6-dashboard.json: |

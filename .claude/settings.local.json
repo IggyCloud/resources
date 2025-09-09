@@ -17,7 +17,17 @@
       "Read(//c/Users/Sebastian/source/repos/IggyCloud/**)",
       "Bash(k6 run:*)",
       "Bash(timeout 120s k6 run catalog-api-open-model-test.js)",
-      "Bash(timeout:*)"
+      "Bash(timeout:*)",
+      "Bash(find:*)",
+      "Bash(dotnet build)",
+      "Bash(curl:*)",
+      "Bash(./patch-nodeports.sh:*)",
+      "Bash(./k8s/patch-nodeports.sh:*)",
+      "Bash(chmod:*)",
+      "Bash(tree:*)",
+      "Bash(./observability/scripts/cleanup-observability.sh:*)",
+      "Bash(./Aspir8.sh:*)",
+      "Bash(./observability/scripts/post-deploy-monitoring.sh:*)"
     ],
     "deny": [],
     "ask": []
