@@ -31,7 +31,10 @@
       "Bash(./k6/run-test.sh:*)",
       "Bash(./aspir8/Aspir8-delete.sh:*)",
       "Bash(./aspir8/Aspir8.sh:*)",
-      "Bash(dotnet tool install:*)"
+      "Bash(dotnet tool install:*)",
+      "Bash(env)",
+      "Bash(claude mcp add:*)",
+      "Bash(claude mcp:*)"
     ],
     "deny": [],
     "ask": []

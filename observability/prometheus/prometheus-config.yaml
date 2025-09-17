@@ -52,10 +52,31 @@ data:
         metrics_path: /metrics
         scrape_interval: 10s
       
-      # Database Services  
-      - job_name: 'postgres'
-        static_configs:
-          - targets: ['postgres:5432']
+      # Database Services - Using service discovery for better reliability
+      - job_name: 'postgres-exporter'
+        kubernetes_sd_configs:
+          - role: service
+            namespaces:
+              names:
+              - default
+        relabel_configs:
+          - source_labels: [__meta_kubernetes_service_name]
+            action: keep
+            regex: postgres-exporter
+          - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_scrape]
+            action: keep
+            regex: true
+          - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_path]
+            action: replace
+            target_label: __metrics_path__
+            regex: (.+)
+          - source_labels: [__address__, __meta_kubernetes_service_annotation_prometheus_io_port]
+            action: replace
+            regex: ([^:]+)(?::\d+)?;(\d+)
+            replacement: $1:$2
+            target_label: __address__
+          - source_labels: [__meta_kubernetes_service_name]
+            target_label: job
         metrics_path: /metrics
         scrape_interval: 15s
       

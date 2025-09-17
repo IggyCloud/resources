@@ -6,17 +6,17 @@ export const options = {
     items_open_model: {
       executor: 'ramping-arrival-rate',
       timeUnit: '1s',
-      startRate: 150,
-      preAllocatedVUs: 300,
+      startRate: 100,
+      preAllocatedVUs: 100,
       maxVUs: 800,
       stages: [
-        { duration: '20s', target: 1000 }, // Start at 1000 RPS
-        { duration: '60s', target: 1000 }, // hold at 1000 RPS
-        { duration: '30s', target: 1500 }, // ramp to 1500 RPS
-        { duration: '60s', target: 1500 }, // hold at 1500 RPS
-        { duration: '30s', target: 2000 }, // BREAKING POINT: 2000 RPS
-        { duration: '60s', target: 2000 }, // hold at 2000 RPS - should break
-        { duration: '30s', target: 0 },    // ramp down
+        { duration: '15s', target: 250 },
+        { duration: '15s', target: 500 },
+        { duration: '15s', target: 750 },
+        { duration: '15s', target: 1000 },
+        { duration: '15s', target: 1250 },
+        { duration: '15s', target: 1500 },
+        { duration: '15s', target: 0 },
       ],
       exec: 'hitItems',
     },
