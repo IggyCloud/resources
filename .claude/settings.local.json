@@ -28,7 +28,10 @@
       "Bash(./observability/scripts/cleanup-observability.sh:*)",
       "Bash(./Aspir8.sh:*)",
       "Bash(./observability/scripts/post-deploy-monitoring.sh:*)",
-      "Bash(./k6/run-test.sh:*)"
+      "Bash(./k6/run-test.sh:*)",
+      "Bash(./aspir8/Aspir8-delete.sh:*)",
+      "Bash(./aspir8/Aspir8.sh:*)",
+      "Bash(dotnet tool install:*)"
     ],
     "deny": [],
     "ask": []
