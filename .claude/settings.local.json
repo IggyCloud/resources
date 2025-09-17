@@ -34,7 +34,9 @@
       "Bash(dotnet tool install:*)",
       "Bash(env)",
       "Bash(claude mcp add:*)",
-      "Bash(claude mcp:*)"
+      "Bash(claude mcp:*)",
+      "mcp__context7__get-library-docs",
+      "mcp__context7__resolve-library-id"
     ],
     "deny": [],
     "ask": []

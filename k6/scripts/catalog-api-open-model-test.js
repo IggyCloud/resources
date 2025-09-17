@@ -8,7 +8,7 @@ export const options = {
       timeUnit: '1s',
       startRate: 700,
       preAllocatedVUs: 10,
-      maxVUs: 800,
+      maxVUs: 3000,
       stages: [
         { duration: '60s', target: 900 },
         { duration: '60s', target: 900 },
@@ -26,8 +26,9 @@ export const options = {
     },
   },
   thresholds: {
-    http_req_failed:   ['rate<0.1'],     // Allow 10% error rate to see degradation
-    http_req_duration: ['p(95)<2000'],   // Allow 2s for breaking point detection
+    http_req_failed:   ['rate<0.02'],
+    http_req_duration: ['p(95)<500'],
+    checks:            ['rate>0.98'],
   },
   summaryTrendStats: ['avg','min','med','p(90)','p(95)','p(99)','max'],
 };
