@@ -589,99 +589,6 @@ data:
           "datasource": {
             "type": "prometheus"
           },
-          "description": "Real-time memory consumption across all API services",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "continuous-GrYlRd"
-              },
-              "custom": {
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "drawStyle": "line",
-                "fillOpacity": 20,
-                "gradientMode": "opacity",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "vis": false
-                },
-                "lineInterpolation": "smooth",
-                "lineWidth": 3,
-                "pointSize": 8,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "auto",
-                "spanNulls": false,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 1073741824
-                  }
-                ]
-              },
-              "unit": "bytes"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 10,
-            "w": 12,
-            "x": 12,
-            "y": 18
-          },
-          "id": 2,
-          "options": {
-            "legend": {
-              "calcs": [
-                "lastNotNull",
-                "max"
-              ],
-              "displayMode": "table",
-              "placement": "bottom",
-              "showLegend": true
-            },
-            "tooltip": {
-              "mode": "multi",
-              "sort": "desc"
-            }
-          },
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus"
-              },
-              "expr": "dotnet_process_memory_working_set_bytes{job!~\"prometheus|kubernetes-services\"}",
-              "legendFormat": "💾 {{job}}",
-              "refId": "A"
-            }
-          ],
-          "title": "💾 Memory Consumption",
-          "type": "timeseries"
-        },
-        {
-          "datasource": {
-            "type": "prometheus"
-          },
           "description": "Response time performance with percentile bands",
           "fieldConfig": {
             "defaults": {
@@ -1706,7 +1613,7 @@ data:
             "h": 1,
             "w": 24,
             "x": 0,
-            "y": 50
+            "y": 49
           },
           "id": 200,
           "panels": [],
@@ -1762,7 +1669,7 @@ data:
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 51
+            "y": 50
           },
           "id": 201,
           "options": {
@@ -1781,17 +1688,25 @@ data:
               "datasource": {
                 "type": "prometheus"
               },
-              "expr": "db_client_connections_usage{state=\"used\"}",
-              "legendFormat": "{{job}} - Used Connections",
+              "expr": "dotnet_ef_database_connections_idle{job!~\"prometheus|kubernetes-services\"}",
+              "legendFormat": "{{job}} - Idle Connections",
               "refId": "A"
             },
             {
               "datasource": {
                 "type": "prometheus"
               },
-              "expr": "db_client_connections_max",
-              "legendFormat": "{{job}} - Max Connections",
+              "expr": "dotnet_ef_database_connections_busy{job!~\"prometheus|kubernetes-services\"}",
+              "legendFormat": "{{job}} - Busy Connections",
               "refId": "B"
+            },
+            {
+              "datasource": {
+                "type": "prometheus"
+              },
+              "expr": "dotnet_ef_database_connections_total{job!~\"prometheus|kubernetes-services\"}",
+              "legendFormat": "{{job}} - Total Connections",
+              "refId": "C"
             }
           ],
           "title": "Database Connection Pool Usage",
@@ -1844,7 +1759,7 @@ data:
             "h": 8,
             "w": 12,
             "x": 12,
-            "y": 51
+            "y": 50
           },
           "id": 202,
           "options": {
@@ -1883,7 +1798,7 @@ data:
           "datasource": {
             "type": "prometheus"
           },
-          "description": "PostgreSQL CPU usage showing the database bottleneck",
+          "description": "PostgreSQL database activity metrics showing query performance and active connections",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -1945,7 +1860,7 @@ data:
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 59
+            "y": 58
           },
           "id": 203,
           "options": {
@@ -1964,12 +1879,28 @@ data:
               "datasource": {
                 "type": "prometheus"
               },
-              "expr": "rate(dotnet_process_cpu_time_seconds_total{job=\"postgres\"}[5m]) * 100",
-              "legendFormat": "PostgreSQL - {{cpu_mode}} CPU Usage %",
+              "expr": "rate(pg_stat_database_tup_returned_total{job=\"postgres-exporter\"}[5m])",
+              "legendFormat": "PostgreSQL - Tuples Returned/sec",
               "refId": "A"
+            },
+            {
+              "datasource": {
+                "type": "prometheus"
+              },
+              "expr": "rate(pg_stat_database_tup_fetched_total{job=\"postgres-exporter\"}[5m])",
+              "legendFormat": "PostgreSQL - Tuples Fetched/sec",
+              "refId": "B"
+            },
+            {
+              "datasource": {
+                "type": "prometheus"
+              },
+              "expr": "pg_stat_activity_count{job=\"postgres-exporter\"}",
+              "legendFormat": "PostgreSQL - Active Connections",
+              "refId": "C"
             }
           ],
-          "title": "PostgreSQL CPU Usage (Database Bottleneck)",
+          "title": "PostgreSQL Database Activity & Connections",
           "type": "timeseries"
         },
         {
@@ -2000,7 +1931,7 @@ data:
             "h": 8,
             "w": 12,
             "x": 12,
-            "y": 59
+            "y": 58
           },
           "id": 204,
           "options": {
@@ -2035,13 +1966,113 @@ data:
               "datasource": {
                 "type": "prometheus"
               },
-              "expr": "db_client_connections_usage{state=\"used\"} / db_client_connections_max",
+              "expr": "dotnet_ef_database_connections_busy{job!~\"prometheus|kubernetes-services\"} / dotnet_ef_database_connections_total{job!~\"prometheus|kubernetes-services\"}",
               "legendFormat": "{{job}} Pool Utilization",
               "refId": "A"
             }
           ],
           "title": "Database Connection Pool Utilization",
           "type": "piechart"
+        },
+        {
+          "datasource": {
+            "type": "prometheus"
+          },
+          "description": "Active database connections by microservice to monitor connection pool depletion",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisLabel": "Active Connections",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 25,
+                "gradientMode": "opacity",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "vis": false
+                },
+                "lineInterpolation": "smooth",
+                "lineWidth": 3,
+                "pointSize": 6,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "line"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "yellow",
+                    "value": 15
+                  },
+                  {
+                    "color": "red",
+                    "value": 25
+                  }
+                ]
+              },
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 66
+          },
+          "id": 205,
+          "options": {
+            "legend": {
+              "calcs": ["last", "max", "mean"],
+              "displayMode": "table",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "mode": "multi",
+              "sort": "desc"
+            }
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus"
+              },
+              "expr": "dotnet_ef_database_connections_busy{job!~\"prometheus|kubernetes-services\"}",
+              "legendFormat": "{{job}} - Active DB Connections",
+              "refId": "A"
+            },
+            {
+              "datasource": {
+                "type": "prometheus"
+              },
+              "expr": "dotnet_ef_database_connections_pool_exhausted_total{job!~\"prometheus|kubernetes-services\"}",
+              "legendFormat": "{{job}} - Pool Exhausted (Total)",
+              "refId": "B"
+            }
+          ],
+          "title": "Database Connections Per Application",
+          "type": "timeseries"
         }
       ],
       "schemaVersion": 37,
