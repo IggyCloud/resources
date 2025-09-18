@@ -1,40 +1,47 @@
 import http from 'k6/http';
 import { check, sleep } from 'k6';
+import { Rate } from 'k6/metrics';
+
+// Custom metrics
+const errorRate = new Rate('errors');
 
 export const options = {
+  discardResponseBodies: true,
   scenarios: {
     items_open_model: {
       executor: 'ramping-arrival-rate',
       timeUnit: '1s',
-      startRate: 700,
-      preAllocatedVUs: 100,
-      maxVUs: 3000,
+      startRate: 50,
+      preAllocatedVUs: 1000,
+      maxVUs: 2000,
       stages: [
-        { duration: '60s', target: 1000 },
-        { duration: '60s', target: 1000 },
-        { duration: '60s', target: 1200 },
-        { duration: '60s', target: 1200 },
+        { duration: '60s', target: 800 },
+        { duration: '90s', target: 800 },
+        { duration: '30s', target: 1000 },
+        { duration: '90s', target: 1000 },
+        { duration: '30s', target: 1200 },
+        { duration: '90s', target: 1200 },
         { duration: '60s', target: 1400 },
-        { duration: '60s', target: 1400 },
-        { duration: '60s', target: 1600 },
-        { duration: '60s', target: 1600 },
-        { duration: '60s', target: 1800 },
-        { duration: '60s', target: 1800 },
-        { duration: '60s', target: 0 },
+        { duration: '90s', target: 1400 },
+        { duration: '30s', target: 1600 },
+        { duration: '90s', target: 1600 },
+        { duration: '30s', target: 1800 },
+        { duration: '90s', target: 1800 },
+        { duration: '30s', target: 0 },
       ],
       exec: 'hitItems',
-    },
+    }
   },
   thresholds: {
     http_req_failed:   ['rate<0.02'],
     http_req_duration: ['p(95)<500'],
     checks:            ['rate>0.98'],
-  },
-  summaryTrendStats: ['avg','min','med','p(90)','p(95)','p(99)','max'],
+    errors: ['rate<0.01']
+  }
 };
 
 const BASE = 'http://catalog-api.default.svc.cluster.local:8080';
-const URL  = `${BASE}/api/catalog/items?api-version=1.0`;
+const URL  = `${BASE}/api/catalog/items?api-version=1.0&pageSize=100`;
 
 export function hitItems() {
   const res = http.get(URL, { 
@@ -49,8 +56,5 @@ export function hitItems() {
   check(res, { 
     '200 OK': (r) => r.status === 200,
     'Response time < 500ms': (r) => r.timings.duration < 500,
-  });
-  
-  // NO SLEEP - Let K6 send requests as fast as possible
-  // The arrival-rate executor will control the rate, not artificial delays
+  })  || errorRate.add(1);
 }
