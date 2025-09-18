@@ -7,11 +7,9 @@ export const options = {
       executor: 'ramping-arrival-rate',
       timeUnit: '1s',
       startRate: 700,
-      preAllocatedVUs: 10,
+      preAllocatedVUs: 100,
       maxVUs: 3000,
       stages: [
-        { duration: '60s', target: 900 },
-        { duration: '60s', target: 900 },
         { duration: '60s', target: 1000 },
         { duration: '60s', target: 1000 },
         { duration: '60s', target: 1200 },
@@ -20,6 +18,8 @@ export const options = {
         { duration: '60s', target: 1400 },
         { duration: '60s', target: 1600 },
         { duration: '60s', target: 1600 },
+        { duration: '60s', target: 1800 },
+        { duration: '60s', target: 1800 },
         { duration: '60s', target: 0 },
       ],
       exec: 'hitItems',
@@ -48,7 +48,7 @@ export function hitItems() {
   
   check(res, { 
     '200 OK': (r) => r.status === 200,
-    'Response time < 5s': (r) => r.timings.duration < 5000,
+    'Response time < 500ms': (r) => r.timings.duration < 500,
   });
   
   // NO SLEEP - Let K6 send requests as fast as possible
