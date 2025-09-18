@@ -14,12 +14,12 @@ echo ""
 
 # Step 1: Apply consolidated Grafana configuration for default namespace
 echo "📊 Applying Grafana dashboard configurations..."
-kubectl apply -f "$OBSERVABILITY_ROOT/grafana/consolidated-grafana-config.yaml"
+kubectl apply -f "$OBSERVABILITY_ROOT/grafana/grafana-config.yaml"
 
 # Step 2: Apply dashboard ConfigMaps  
 echo "📈 Applying K6 and API monitoring dashboards..."
-kubectl apply -f "$OBSERVABILITY_ROOT/grafana/grafana-k6-dashboard.yaml"
-kubectl apply -f "$OBSERVABILITY_ROOT/grafana/grafana-api-dashboard.yaml"
+kubectl apply -f "$OBSERVABILITY_ROOT/grafana/k6-dashboard.yaml"
+kubectl apply -f "$OBSERVABILITY_ROOT/grafana/api-dashboard.yaml"
 
 # Step 3: Configure Prometheus RBAC for service discovery
 echo "🔐 Configuring Prometheus RBAC for Kubernetes service discovery..."

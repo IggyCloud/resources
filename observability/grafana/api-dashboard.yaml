@@ -110,7 +110,7 @@ data:
           "id": 10,
           "options": {
             "legend": {
-              "calcs": ["lastNotNull", "max"],
+              "calcs": ["mean", "lastNotNull", "max"],
               "displayMode": "table",
               "placement": "bottom",
               "showLegend": true
@@ -126,7 +126,7 @@ data:
                 "type": "prometheus"
               },
               "expr": "rate(k6_http_reqs_total[1m])",
-              "legendFormat": "🚀 K6 Request Rate",
+              "legendFormat": "Auto",
               "refId": "A"
             }
           ],
@@ -497,8 +497,24 @@ data:
                 "type": "prometheus"
               },
               "expr": "rate(k6_http_reqs_total[1m])",
-              "legendFormat": "Status {{status}}",
+              "legendFormat": "HTTP {{status}} (K6 Load Test)",
               "refId": "A"
+            },
+            {
+              "datasource": {
+                "type": "prometheus"
+              },
+              "expr": "rate(k6_http_req_failed_total[1m]) * 100",
+              "legendFormat": "❌ HTTP Error Rate % (K6)",
+              "refId": "B"
+            },
+            {
+              "datasource": {
+                "type": "prometheus"
+              },
+              "expr": "rate(k6_checks_total{result=\"0\"}[1m])",
+              "legendFormat": "🔴 Check Failures/sec (K6)",
+              "refId": "C"
             }
           ],
           "title": "🎯 K6 Load Testing - HTTP Status Codes Rate",
@@ -1706,7 +1722,27 @@ data:
               "mappings": [],
               "unit": "percentunit",
               "max": 1,
-              "min": 0
+              "min": 0,
+              "color": {
+                "mode": "thresholds"
+              },
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "yellow",
+                    "value": 0.7
+                  },
+                  {
+                    "color": "red",
+                    "value": 0.9
+                  }
+                ]
+              }
             },
             "overrides": []
           },
@@ -1718,20 +1754,7 @@ data:
           },
           "id": 204,
           "options": {
-            "displayLabels": [
-              "name",
-              "percent"
-            ],
-            "legend": {
-              "displayMode": "table",
-              "placement": "right",
-              "showLegend": true,
-              "values": [
-                "value",
-                "percent"
-              ]
-            },
-            "pieType": "pie",
+            "orientation": "auto",
             "reduceOptions": {
               "calcs": [
                 "lastNotNull"
@@ -1739,23 +1762,21 @@ data:
               "fields": "",
               "values": false
             },
-            "tooltip": {
-              "mode": "single",
-              "sort": "none"
-            }
+            "showThresholdLabels": false,
+            "showThresholdMarkers": true
           },
           "targets": [
             {
               "datasource": {
                 "type": "prometheus"
               },
-              "expr": "db_client_connections_usage{state=\"used\",job!~\"prometheus|kubernetes-services\"} / (db_client_connections_usage{state=\"idle\",job!~\"prometheus|kubernetes-services\"} + db_client_connections_usage{state=\"used\",job!~\"prometheus|kubernetes-services\"})",
+              "expr": "sum by (job) (db_client_connections_usage{state=\"used\",job!~\"prometheus|kubernetes-services\"}) / sum by (job) (db_client_connections_usage{job!~\"prometheus|kubernetes-services\"})",
               "legendFormat": "{{job}} Pool Utilization",
               "refId": "A"
             }
           ],
           "title": "Database Connection Pool Utilization",
-          "type": "piechart"
+          "type": "gauge"
         },
         {
           "datasource": {
