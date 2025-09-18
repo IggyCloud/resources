@@ -36,7 +36,22 @@
       "Bash(claude mcp add:*)",
       "Bash(claude mcp:*)",
       "mcp__context7__get-library-docs",
-      "mcp__context7__resolve-library-id"
+      "mcp__context7__resolve-library-id",
+      "Bash(for i in {1..5})",
+      "Bash(do echo \"Request $i:\")",
+      "Bash(done)",
+      "Bash(k6:*)",
+      "Bash(wmic:*)",
+      "Bash(powershell:*)",
+      "Bash(docker stats:*)",
+      "Bash(pkill:*)",
+      "Bash(python:*)",
+      "Bash(grep:*)",
+      "mcp__puppeteer__puppeteer_navigate",
+      "mcp__puppeteer__puppeteer_screenshot",
+      "mcp__puppeteer__puppeteer_fill",
+      "mcp__puppeteer__puppeteer_click",
+      "Bash(http://localhost:30300/api/dashboards/db)"
     ],
     "deny": [],
     "ask": []
