@@ -12,21 +12,19 @@ export const options = {
       executor: 'ramping-arrival-rate',
       timeUnit: '1s',
       startRate: 50,
-      preAllocatedVUs: 1000,
-      maxVUs: 2000,
+      preAllocatedVUs: 100,
+      maxVUs: 500,
       stages: [
-        { duration: '60s', target: 800 },
+        { duration: '60s', target: 500 },
+        { duration: '90s', target: 500 },
+        { duration: '30s', target: 700 },
+        { duration: '90s', target: 700 },
+        { duration: '30s', target: 800 },
         { duration: '90s', target: 800 },
-        { duration: '30s', target: 1000 },
+        { duration: '60s', target: 1000 },
         { duration: '90s', target: 1000 },
         { duration: '30s', target: 1200 },
         { duration: '90s', target: 1200 },
-        { duration: '60s', target: 1400 },
-        { duration: '90s', target: 1400 },
-        { duration: '30s', target: 1600 },
-        { duration: '90s', target: 1600 },
-        { duration: '30s', target: 1800 },
-        { duration: '90s', target: 1800 },
         { duration: '30s', target: 0 },
       ],
       exec: 'hitItems',
@@ -41,7 +39,7 @@ export const options = {
 };
 
 const BASE = 'http://catalog-api.default.svc.cluster.local:8080';
-const URL  = `${BASE}/api/catalog/items?api-version=1.0&pageSize=100`;
+const URL  = `${BASE}/api/catalog/items?api-version=1.0&pageSize=20`;
 
 export function hitItems() {
   const res = http.get(URL, { 

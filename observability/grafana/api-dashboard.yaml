@@ -379,16 +379,20 @@ data:
             "datasource": {
               "type": "prometheus"
             },
+            "editorMode": "code",
             "expr": "k6_http_req_duration_p95*1000",
-            "legendFormat": "__auto",
+            "legendFormat": "P95 | {{name}} | {{status}}",
+            "range": true,
             "refId": "A"
           },
           {
             "datasource": {
               "type": "prometheus"
             },
+            "editorMode": "code",
             "expr": "k6_http_req_duration_p50*1000",
-            "legendFormat": "__auto",
+            "legendFormat": "P50 | {{name}} | {{status}}",
+            "range": true,
             "refId": "B"
           }
         ],
@@ -547,24 +551,30 @@ data:
             "datasource": {
               "type": "prometheus"
             },
+            "editorMode": "code",
             "expr": "rate(k6_http_reqs_total[1m])",
-            "legendFormat": "__auto",
+            "legendFormat": "Total | {{name}} | {{status}}",
+            "range": true,
             "refId": "A"
           },
           {
             "datasource": {
               "type": "prometheus"
             },
+            "editorMode": "code",
             "expr": "rate(k6_http_req_failed_total[1m]) * 100",
-            "legendFormat": "__auto",
+            "legendFormat": "Failed | {{name}} | {{status}}",
+            "range": true,
             "refId": "B"
           },
           {
             "datasource": {
               "type": "prometheus"
             },
+            "editorMode": "code",
             "expr": "rate(k6_checks_total{result=\"0\"}[1m])",
-            "legendFormat": "__auto",
+            "legendFormat": "Checks | {{name}} | {{status}}",
+            "range": true,
             "refId": "C"
           }
         ],
@@ -683,20 +693,10 @@ data:
               "type": "prometheus"
             },
             "editorMode": "code",
-            "expr": "sum by (job) (rate(dotnet_process_cpu_time_seconds_total{job!~\"prometheus\"}[5m])) * 100",
-            "legendFormat": "__auto",
+            "expr": "sum by (job) (irate(dotnet_process_cpu_time_seconds_total{job!~\"prometheus|kubernetes-services\"}[5m])) * 100",
+            "legendFormat": "{{job}} | Process",
             "range": true,
             "refId": "A"
-          },
-          {
-            "datasource": {
-              "type": "prometheus"
-            },
-            "editorMode": "code",
-            "expr": "rate(container_cpu_usage_seconds_total{pod=\"postgres-0\"}[5m]) * 100",
-            "legendFormat": "__auto",
-            "range": true,
-            "refId": "B"
           }
         ],
         "title": "⚡ CPU Performance (All Services)",
@@ -762,7 +762,23 @@ data:
             },
             "unit": "bytes"
           },
-          "overrides": []
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "{__name__=\"dotnet_process_memory_working_set_bytes\", instance=\"catalog-api.default.svc:8080\", job=\"kubernetes-services\", kubernetes_name=\"catalog-api\", kubernetes_namespace=\"default\", otel_scope_name=\"System.Runtime\"}"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "purple",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            }
+          ]
         },
         "gridPos": {
           "h": 12,
@@ -793,8 +809,10 @@ data:
             "datasource": {
               "type": "prometheus"
             },
+            "editorMode": "code",
             "expr": "dotnet_process_memory_working_set_bytes{job!~\"prometheus\"}",
-            "legendFormat": "__auto",
+            "legendFormat": "{{job}}",
+            "range": true,
             "refId": "A"
           }
         ],
@@ -886,7 +904,7 @@ data:
         },
         "gridPos": {
           "h": 10,
-          "w": 24,
+          "w": 12,
           "x": 0,
           "y": 30
         },
@@ -914,102 +932,35 @@ data:
             "datasource": {
               "type": "prometheus"
             },
-            "expr": "histogram_quantile(0.95, rate(http_server_request_duration_seconds_bucket{job!~\"prometheus\"}[5m])) * 1000",
-            "legendFormat": "__auto",
+            "editorMode": "code",
+            "expr": "histogram_quantile(0.95, rate(http_server_request_duration_seconds_bucket{job!~\"prometheus|kubernetes-services\"}[5m])) * 1000",
+            "legendFormat": "P95 | {{job}} | {{http_response_status_code}}",
+            "range": true,
             "refId": "A"
           },
           {
             "datasource": {
               "type": "prometheus"
             },
-            "expr": "histogram_quantile(0.50, rate(http_server_request_duration_seconds_bucket{job!~\"prometheus\"}[5m])) * 1000",
-            "legendFormat": "__auto",
+            "editorMode": "code",
+            "expr": "histogram_quantile(0.50, rate(http_server_request_duration_seconds_bucket{job!~\"prometheus|kubernetes-services\"}[5m])) * 1000",
+            "legendFormat": "P50 | {{job}} | {{http_response_status_code}}",
+            "range": true,
             "refId": "B"
           },
           {
             "datasource": {
               "type": "prometheus"
             },
-            "expr": "histogram_quantile(0.99, rate(http_server_request_duration_seconds_bucket{job!~\"prometheus\"}[5m])) * 1000",
-            "legendFormat": "__auto",
+            "editorMode": "code",
+            "expr": "histogram_quantile(0.99, rate(http_server_request_duration_seconds_bucket{job!~\"prometheus|kubernetes-services\"}[5m])) * 1000",
+            "legendFormat": "P99 | {{job}} | {{http_response_status_code}}",
+            "range": true,
             "refId": "C"
           }
         ],
         "title": "🚀 HTTP Response Time Performance Bands",
         "type": "timeseries"
-      },
-      {
-        "datasource": {
-          "type": "prometheus"
-        },
-        "description": "Live HTTP request distribution across all API services",
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "palette-classic"
-            },
-            "custom": {
-              "hideFrom": {
-                "legend": false,
-                "tooltip": false,
-                "vis": false,
-                "viz": false
-              }
-            },
-            "mappings": [],
-            "unit": "reqps"
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 10,
-          "w": 12,
-          "x": 0,
-          "y": 40
-        },
-        "id": 1,
-        "options": {
-          "displayLabels": [
-            "name",
-            "value",
-            "percent"
-          ],
-          "legend": {
-            "displayMode": "table",
-            "placement": "right",
-            "showLegend": true,
-            "values": [
-              "value",
-              "percent"
-            ]
-          },
-          "pieType": "donut",
-          "reduceOptions": {
-            "calcs": [
-              "lastNotNull"
-            ],
-            "fields": "",
-            "values": false
-          },
-          "tooltip": {
-            "hideZeros": false,
-            "mode": "single",
-            "sort": "desc"
-          }
-        },
-        "pluginVersion": "12.1.1",
-        "targets": [
-          {
-            "datasource": {
-              "type": "prometheus"
-            },
-            "expr": "sum(rate(http_server_request_duration_seconds_count{job!~\"prometheus\"}[5m])) by (job)",
-            "legendFormat": "__auto",
-            "refId": "A"
-          }
-        ],
-        "title": "🔥 API Request Distribution (Live Traffic)",
-        "type": "piechart"
       },
       {
         "datasource": {
@@ -1077,7 +1028,7 @@ data:
           "h": 10,
           "w": 12,
           "x": 12,
-          "y": 40
+          "y": 30
         },
         "id": 5,
         "options": {
@@ -1089,7 +1040,9 @@ data:
             ],
             "displayMode": "table",
             "placement": "bottom",
-            "showLegend": true
+            "showLegend": true,
+            "sortBy": "Max",
+            "sortDesc": true
           },
           "tooltip": {
             "hideZeros": false,
@@ -1103,8 +1056,10 @@ data:
             "datasource": {
               "type": "prometheus"
             },
+            "editorMode": "code",
             "expr": "rate(http_server_request_duration_seconds_count{job!~\"prometheus\"}[5m])",
-            "legendFormat": "__auto",
+            "legendFormat": "{{job}} | {{http_response_status_code}}",
+            "range": true,
             "refId": "A"
           }
         ],
@@ -1115,11 +1070,11 @@ data:
         "datasource": {
           "type": "prometheus"
         },
-        "description": "Live connection monitoring with gradients",
+        "description": "Thread pool utilization with smooth gradients",
         "fieldConfig": {
           "defaults": {
             "color": {
-              "mode": "continuous-blues"
+              "mode": "continuous-BlPu"
             },
             "custom": {
               "axisBorderShow": false,
@@ -1130,8 +1085,8 @@ data:
               "barAlignment": 0,
               "barWidthFactor": 0.6,
               "drawStyle": "line",
-              "fillOpacity": 40,
-              "gradientMode": "scheme",
+              "fillOpacity": 35,
+              "gradientMode": "opacity",
               "hideFrom": {
                 "legend": false,
                 "tooltip": false,
@@ -1140,7 +1095,7 @@ data:
               },
               "insertNulls": false,
               "lineInterpolation": "smooth",
-              "lineWidth": 4,
+              "lineWidth": 3,
               "pointSize": 6,
               "scaleDistribution": {
                 "type": "linear"
@@ -1171,46 +1126,15 @@ data:
             },
             "unit": "short"
           },
-          "overrides": [
-            {
-              "matcher": {
-                "id": "byRegexp",
-                "options": ".*Active.*"
-              },
-              "properties": [
-                {
-                  "id": "color",
-                  "value": {
-                    "fixedColor": "green",
-                    "mode": "fixed"
-                  }
-                }
-              ]
-            },
-            {
-              "matcher": {
-                "id": "byRegexp",
-                "options": ".*Queued.*"
-              },
-              "properties": [
-                {
-                  "id": "color",
-                  "value": {
-                    "fixedColor": "orange",
-                    "mode": "fixed"
-                  }
-                }
-              ]
-            }
-          ]
+          "overrides": []
         },
         "gridPos": {
-          "h": 8,
-          "w": 12,
+          "h": 9,
+          "w": 8,
           "x": 0,
-          "y": 50
+          "y": 40
         },
-        "id": 6,
+        "id": 8,
         "options": {
           "legend": {
             "calcs": [
@@ -1233,20 +1157,14 @@ data:
             "datasource": {
               "type": "prometheus"
             },
-            "expr": "kestrel_active_connections{job!~\"prometheus\"}",
-            "legendFormat": "__auto",
+            "editorMode": "code",
+            "expr": "dotnet_thread_pool_thread_count_total{job!~\"prometheus\"}",
+            "legendFormat": "{{job}}",
+            "range": true,
             "refId": "A"
-          },
-          {
-            "datasource": {
-              "type": "prometheus"
-            },
-            "expr": "kestrel_queued_connections{job!~\"prometheus\"}",
-            "legendFormat": "__auto",
-            "refId": "B"
           }
         ],
-        "title": "🌐 Kestrel Connection Health",
+        "title": "🧵 ThreadPool Utilization",
         "type": "timeseries"
       },
       {
@@ -1316,10 +1234,10 @@ data:
           "overrides": []
         },
         "gridPos": {
-          "h": 8,
-          "w": 12,
-          "x": 12,
-          "y": 50
+          "h": 9,
+          "w": 9,
+          "x": 8,
+          "y": 40
         },
         "id": 7,
         "options": {
@@ -1345,111 +1263,14 @@ data:
             "datasource": {
               "type": "prometheus"
             },
-            "expr": "rate(dotnet_gc_pause_time_seconds_total{job!~\"prometheus\"}[5m])",
-            "legendFormat": "__auto",
+            "editorMode": "code",
+            "expr": "rate(dotnet_gc_pause_time_seconds_total{job!~\"prometheus|kubernetes-services\"}[5m])",
+            "legendFormat": "{{job}}",
+            "range": true,
             "refId": "A"
           }
         ],
         "title": "🗑️ .NET Garbage Collection Performance",
-        "type": "timeseries"
-      },
-      {
-        "datasource": {
-          "type": "prometheus"
-        },
-        "description": "Thread pool utilization with smooth gradients",
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "continuous-BlPu"
-            },
-            "custom": {
-              "axisBorderShow": false,
-              "axisCenteredZero": false,
-              "axisColorMode": "text",
-              "axisLabel": "",
-              "axisPlacement": "auto",
-              "barAlignment": 0,
-              "barWidthFactor": 0.6,
-              "drawStyle": "line",
-              "fillOpacity": 35,
-              "gradientMode": "opacity",
-              "hideFrom": {
-                "legend": false,
-                "tooltip": false,
-                "vis": false,
-                "viz": false
-              },
-              "insertNulls": false,
-              "lineInterpolation": "smooth",
-              "lineWidth": 3,
-              "pointSize": 6,
-              "scaleDistribution": {
-                "type": "linear"
-              },
-              "showPoints": "auto",
-              "spanNulls": false,
-              "stacking": {
-                "group": "A",
-                "mode": "none"
-              },
-              "thresholdsStyle": {
-                "mode": "off"
-              }
-            },
-            "mappings": [],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": 0
-                },
-                {
-                  "color": "red",
-                  "value": 80
-                }
-              ]
-            },
-            "unit": "short"
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 8,
-          "w": 12,
-          "x": 0,
-          "y": 58
-        },
-        "id": 8,
-        "options": {
-          "legend": {
-            "calcs": [
-              "lastNotNull",
-              "mean"
-            ],
-            "displayMode": "table",
-            "placement": "bottom",
-            "showLegend": true
-          },
-          "tooltip": {
-            "hideZeros": false,
-            "mode": "multi",
-            "sort": "desc"
-          }
-        },
-        "pluginVersion": "12.1.1",
-        "targets": [
-          {
-            "datasource": {
-              "type": "prometheus"
-            },
-            "expr": "dotnet_thread_pool_thread_count_total{job!~\"prometheus\"}",
-            "legendFormat": "__auto",
-            "refId": "A"
-          }
-        ],
-        "title": "🧵 ThreadPool Utilization",
         "type": "timeseries"
       },
       {
@@ -1515,10 +1336,10 @@ data:
           "overrides": []
         },
         "gridPos": {
-          "h": 8,
-          "w": 12,
-          "x": 12,
-          "y": 58
+          "h": 9,
+          "w": 7,
+          "x": 17,
+          "y": 40
         },
         "id": 9,
         "options": {
@@ -1543,8 +1364,10 @@ data:
             "datasource": {
               "type": "prometheus"
             },
-            "expr": "http_server_active_requests{job!~\"prometheus\"}",
-            "legendFormat": "__auto",
+            "editorMode": "code",
+            "expr": "http_server_active_requests{job!~\"prometheus|kubernetes-services\"}",
+            "legendFormat": "{{job}} | {{http_request_method}}",
+            "range": true,
             "refId": "A"
           }
         ],
@@ -1557,7 +1380,7 @@ data:
           "h": 1,
           "w": 24,
           "x": 0,
-          "y": 66
+          "y": 49
         },
         "id": 200,
         "panels": [],
@@ -1633,10 +1456,10 @@ data:
           "overrides": []
         },
         "gridPos": {
-          "h": 8,
-          "w": 12,
+          "h": 11,
+          "w": 9,
           "x": 0,
-          "y": 67
+          "y": 50
         },
         "id": 203,
         "options": {
@@ -1647,7 +1470,9 @@ data:
             ],
             "displayMode": "table",
             "placement": "bottom",
-            "showLegend": true
+            "showLegend": true,
+            "sortBy": "Max",
+            "sortDesc": true
           },
           "tooltip": {
             "hideZeros": false,
@@ -1661,28 +1486,123 @@ data:
             "datasource": {
               "type": "prometheus"
             },
-            "expr": "rate(pg_stat_database_tup_returned_total{job=\"postgres-exporter\"}[5m])",
-            "legendFormat": "__auto",
-            "refId": "A"
-          },
-          {
-            "datasource": {
-              "type": "prometheus"
-            },
-            "expr": "rate(pg_stat_database_tup_fetched_total{job=\"postgres-exporter\"}[5m])",
-            "legendFormat": "__auto",
-            "refId": "B"
-          },
-          {
-            "datasource": {
-              "type": "prometheus"
-            },
+            "editorMode": "code",
             "expr": "pg_stat_activity_count{job=\"postgres-exporter\"}",
-            "legendFormat": "__auto",
+            "legendFormat": "{{datname}} | activity",
+            "range": true,
             "refId": "C"
+          },
+          {
+            "datasource": {
+              "type": "prometheus"
+            },
+            "editorMode": "code",
+            "expr": "irate(container_cpu_usage_seconds_total{pod=\"postgres-0\"}[5m]) * 100",
+            "hide": false,
+            "legendFormat": "Postgres-0 CPU container",
+            "range": true,
+            "refId": "D"
           }
         ],
         "title": "PostgreSQL Database Activity & Connections",
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "type": "prometheus"
+        },
+        "description": "Connection pool utilization percentage by service",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "barWidthFactor": 0.6,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "dashed+area"
+              }
+            },
+            "mappings": [],
+            "max": 100,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": 0
+                },
+                {
+                  "color": "red",
+                  "value": 90
+                }
+              ]
+            },
+            "unit": "percent"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 11,
+          "w": 9,
+          "x": 9,
+          "y": 50
+        },
+        "id": 204,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "hideZeros": false,
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "pluginVersion": "12.1.1",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus"
+            },
+            "editorMode": "code",
+            "expr": "sum by (job) (db_client_connections_usage{state=\"used\",job!~\"prometheus|kubernetes-services\"}) / sum by (job) (db_client_connections_usage{job!~\"prometheus|kubernetes-services\"})*100",
+            "legendFormat": "__auto",
+            "range": true,
+            "refId": "A"
+          }
+        ],
+        "title": "Database Connection Pool Utilization",
         "type": "timeseries"
       },
       {
@@ -1748,10 +1668,10 @@ data:
           "overrides": []
         },
         "gridPos": {
-          "h": 8,
-          "w": 12,
-          "x": 12,
-          "y": 67
+          "h": 11,
+          "w": 6,
+          "x": 18,
+          "y": 50
         },
         "id": 202,
         "options": {
@@ -1775,464 +1695,24 @@ data:
             "datasource": {
               "type": "prometheus"
             },
+            "editorMode": "code",
             "expr": "histogram_quantile(0.95, rate(db_client_commands_duration_seconds_bucket[5m])) * 1000",
-            "legendFormat": "__auto",
+            "legendFormat": "P95 | {{instance}}",
+            "range": true,
             "refId": "A"
           },
           {
             "datasource": {
               "type": "prometheus"
             },
+            "editorMode": "code",
             "expr": "histogram_quantile(0.50, rate(db_client_commands_duration_seconds_bucket[5m])) * 1000",
-            "legendFormat": "__auto",
+            "legendFormat": "P50 | {{instance}}",
+            "range": true,
             "refId": "B"
           }
         ],
         "title": "Database Query Response Time",
-        "type": "timeseries"
-      },
-      {
-        "datasource": {
-          "type": "prometheus"
-        },
-        "description": "Database connection pool usage showing used vs maximum connections",
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "palette-classic"
-            },
-            "custom": {
-              "axisBorderShow": false,
-              "axisCenteredZero": false,
-              "axisColorMode": "text",
-              "axisLabel": "Connections",
-              "axisPlacement": "auto",
-              "barAlignment": 0,
-              "barWidthFactor": 0.6,
-              "drawStyle": "line",
-              "fillOpacity": 10,
-              "gradientMode": "none",
-              "hideFrom": {
-                "legend": false,
-                "tooltip": false,
-                "vis": false,
-                "viz": false
-              },
-              "insertNulls": false,
-              "lineInterpolation": "linear",
-              "lineWidth": 2,
-              "pointSize": 5,
-              "scaleDistribution": {
-                "type": "linear"
-              },
-              "showPoints": "auto",
-              "spanNulls": false,
-              "stacking": {
-                "group": "A",
-                "mode": "none"
-              },
-              "thresholdsStyle": {
-                "mode": "off"
-              }
-            },
-            "mappings": [],
-            "max": 100,
-            "min": 0,
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": 0
-                },
-                {
-                  "color": "red",
-                  "value": 80
-                }
-              ]
-            },
-            "unit": "short"
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 8,
-          "w": 12,
-          "x": 0,
-          "y": 75
-        },
-        "id": 201,
-        "options": {
-          "legend": {
-            "calcs": [
-              "last"
-            ],
-            "displayMode": "table",
-            "placement": "bottom",
-            "showLegend": true
-          },
-          "tooltip": {
-            "hideZeros": false,
-            "mode": "multi",
-            "sort": "desc"
-          }
-        },
-        "pluginVersion": "12.1.1",
-        "targets": [
-          {
-            "datasource": {
-              "type": "prometheus"
-            },
-            "expr": "db_client_connections_usage{state=\"idle\",job!~\"prometheus|kubernetes-services\"}",
-            "legendFormat": "__auto",
-            "refId": "A"
-          },
-          {
-            "datasource": {
-              "type": "prometheus"
-            },
-            "expr": "db_client_connections_usage{state=\"used\",job!~\"prometheus|kubernetes-services\"}",
-            "legendFormat": "__auto",
-            "refId": "B"
-          },
-          {
-            "datasource": {
-              "type": "prometheus"
-            },
-            "expr": "db_client_connections_usage{state=\"idle\",job!~\"prometheus|kubernetes-services\"} + db_client_connections_usage{state=\"used\",job!~\"prometheus|kubernetes-services\"}",
-            "legendFormat": "__auto",
-            "refId": "C"
-          }
-        ],
-        "title": "Database Connection Pool Usage",
-        "type": "timeseries"
-      },
-      {
-        "datasource": {
-          "type": "prometheus"
-        },
-        "description": "Connection pool utilization percentage by service",
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "palette-classic"
-            },
-            "custom": {
-              "axisBorderShow": false,
-              "axisCenteredZero": false,
-              "axisColorMode": "text",
-              "axisLabel": "",
-              "axisPlacement": "auto",
-              "barAlignment": 0,
-              "barWidthFactor": 0.6,
-              "drawStyle": "line",
-              "fillOpacity": 0,
-              "gradientMode": "none",
-              "hideFrom": {
-                "legend": false,
-                "tooltip": false,
-                "viz": false
-              },
-              "insertNulls": false,
-              "lineInterpolation": "linear",
-              "lineWidth": 1,
-              "pointSize": 5,
-              "scaleDistribution": {
-                "type": "linear"
-              },
-              "showPoints": "auto",
-              "spanNulls": false,
-              "stacking": {
-                "group": "A",
-                "mode": "none"
-              },
-              "thresholdsStyle": {
-                "mode": "off"
-              }
-            },
-            "mappings": [],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": 0
-                },
-                {
-                  "color": "red",
-                  "value": 80
-                }
-              ]
-            }
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 8,
-          "w": 12,
-          "x": 12,
-          "y": 75
-        },
-        "id": 204,
-        "options": {
-          "legend": {
-            "calcs": [],
-            "displayMode": "list",
-            "placement": "bottom",
-            "showLegend": true
-          },
-          "tooltip": {
-            "hideZeros": false,
-            "mode": "single",
-            "sort": "none"
-          }
-        },
-        "pluginVersion": "12.1.1",
-        "targets": [
-          {
-            "datasource": {
-              "type": "prometheus"
-            },
-            "expr": "sum by (job) (db_client_connections_usage{state=\"used\",job!~\"prometheus|kubernetes-services\"}) / sum by (job) (db_client_connections_usage{job!~\"prometheus\"})",
-            "legendFormat": "__auto",
-            "refId": "A"
-          }
-        ],
-        "title": "Database Connection Pool Utilization",
-        "type": "timeseries"
-      },
-      {
-        "datasource": {
-          "type": "prometheus"
-        },
-        "description": "PostgreSQL database CPU utilization showing process load and system resource consumption",
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "continuous-GrYlRd"
-            },
-            "custom": {
-              "axisBorderShow": false,
-              "axisCenteredZero": false,
-              "axisColorMode": "text",
-              "axisLabel": "CPU Usage %",
-              "axisPlacement": "auto",
-              "barAlignment": 0,
-              "barWidthFactor": 0.6,
-              "drawStyle": "line",
-              "fillOpacity": 25,
-              "gradientMode": "opacity",
-              "hideFrom": {
-                "legend": false,
-                "tooltip": false,
-                "vis": false,
-                "viz": false
-              },
-              "insertNulls": false,
-              "lineInterpolation": "smooth",
-              "lineWidth": 3,
-              "pointSize": 6,
-              "scaleDistribution": {
-                "type": "linear"
-              },
-              "showPoints": "auto",
-              "spanNulls": false,
-              "stacking": {
-                "group": "A",
-                "mode": "none"
-              },
-              "thresholdsStyle": {
-                "mode": "line"
-              }
-            },
-            "mappings": [],
-            "max": 100,
-            "min": 0,
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": 0
-                },
-                {
-                  "color": "yellow",
-                  "value": 70
-                },
-                {
-                  "color": "red",
-                  "value": 90
-                }
-              ]
-            },
-            "unit": "percent"
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 9,
-          "w": 12,
-          "x": 0,
-          "y": 83
-        },
-        "id": 206,
-        "options": {
-          "legend": {
-            "calcs": [
-              "last",
-              "max",
-              "mean"
-            ],
-            "displayMode": "table",
-            "placement": "bottom",
-            "showLegend": true
-          },
-          "tooltip": {
-            "hideZeros": false,
-            "mode": "multi",
-            "sort": "desc"
-          }
-        },
-        "pluginVersion": "12.1.1",
-        "targets": [
-          {
-            "datasource": {
-              "type": "prometheus"
-            },
-            "expr": "rate(process_cpu_seconds_total{job=\"postgres-exporter\"}[5m]) * 100",
-            "legendFormat": "🗄️ PostgreSQL CPU Usage",
-            "refId": "A"
-          },
-          {
-            "datasource": {
-              "type": "prometheus"
-            },
-            "expr": "rate(pg_stat_bgwriter_checkpoint_sync_time_total{job=\"postgres-exporter\"}[5m]) / 1000",
-            "legendFormat": "🔄 Checkpoint Sync Time (ms/s)",
-            "refId": "B"
-          },
-          {
-            "datasource": {
-              "type": "prometheus"
-            },
-            "expr": "rate(pg_stat_bgwriter_checkpoint_write_time_total{job=\"postgres-exporter\"}[5m]) / 1000",
-            "legendFormat": "✍️ Checkpoint Write Time (ms/s)",
-            "refId": "C"
-          }
-        ],
-        "title": "🗄️ PostgreSQL Database CPU & I/O Performance",
-        "type": "timeseries"
-      },
-      {
-        "datasource": {
-          "type": "prometheus"
-        },
-        "description": "Active database connections by microservice to monitor connection pool depletion",
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "palette-classic"
-            },
-            "custom": {
-              "axisBorderShow": false,
-              "axisCenteredZero": false,
-              "axisColorMode": "text",
-              "axisLabel": "Active Connections",
-              "axisPlacement": "auto",
-              "barAlignment": 0,
-              "barWidthFactor": 0.6,
-              "drawStyle": "line",
-              "fillOpacity": 25,
-              "gradientMode": "opacity",
-              "hideFrom": {
-                "legend": false,
-                "tooltip": false,
-                "vis": false,
-                "viz": false
-              },
-              "insertNulls": false,
-              "lineInterpolation": "smooth",
-              "lineWidth": 3,
-              "pointSize": 6,
-              "scaleDistribution": {
-                "type": "linear"
-              },
-              "showPoints": "auto",
-              "spanNulls": false,
-              "stacking": {
-                "group": "A",
-                "mode": "none"
-              },
-              "thresholdsStyle": {
-                "mode": "line"
-              }
-            },
-            "mappings": [],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": 0
-                },
-                {
-                  "color": "yellow",
-                  "value": 15
-                },
-                {
-                  "color": "red",
-                  "value": 25
-                }
-              ]
-            },
-            "unit": "short"
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 9,
-          "w": 12,
-          "x": 12,
-          "y": 83
-        },
-        "id": 205,
-        "options": {
-          "legend": {
-            "calcs": [
-              "last",
-              "max",
-              "mean"
-            ],
-            "displayMode": "table",
-            "placement": "bottom",
-            "showLegend": true
-          },
-          "tooltip": {
-            "hideZeros": false,
-            "mode": "multi",
-            "sort": "desc"
-          }
-        },
-        "pluginVersion": "12.1.1",
-        "targets": [
-          {
-            "datasource": {
-              "type": "prometheus"
-            },
-            "expr": "db_client_connections_usage{state=\"used\",job!~\"prometheus|kubernetes-services\"}",
-            "legendFormat": "__auto",
-            "refId": "A"
-          },
-          {
-            "datasource": {
-              "type": "prometheus"
-            },
-            "expr": "rate(db_client_connections_timeouts_total{job!~\"prometheus\"}[5m])",
-            "legendFormat": "__auto",
-            "refId": "B"
-          }
-        ],
-        "title": "Database Connections Per Application",
         "type": "timeseries"
       }
     ],
@@ -2250,12 +1730,12 @@ data:
       "list": []
     },
     "time": {
-      "from": "now-15m",
-      "to": "now"
+      "from": "2025-09-19T07:38:06.787Z",
+      "to": "2025-09-19T11:38:06.787Z"
     },
     "timepicker": {},
     "timezone": "",
     "title": "eShop Performance Dashboard (with K6 Load Testing)",
     "uid": "eshop-combined-performance",
-    "version": 44
+    "version": 69
   }
