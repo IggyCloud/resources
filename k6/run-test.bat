@@ -4,28 +4,33 @@ echo K6 Load Test Runner
 echo ==================
 echo.
 echo Available test scripts:
-echo 1. Catalog API Open Model Test
-echo 2. Catalog API Closed Model Test
-echo 3. Exit
+echo 1. Catalog API Open Model Test (Read Operations)
+echo 2. Catalog API Closed Model Test (Read Operations)
+echo 3. Catalog API Closed Model Write Test (Write Operations)
+echo 4. Exit
 echo.
-set /p choice="Choose a test (1-3): "
+set /p choice="Choose a test (1-4): "
 
 if "%choice%"=="1" (
-    set SCRIPT_NAME=catalog-api-open-model-test.js
+    set SCRIPT_NAME=catalog-api-open-model-read-test.js
     goto runtest
 )
 if "%choice%"=="2" (
-    set SCRIPT_NAME=catalog-api-closed-model-test.js
+    set SCRIPT_NAME=catalog-api-closed-model-read-test.js
     goto runtest
 )
 if "%choice%"=="3" (
+    set SCRIPT_NAME=catalog-api-closed-model-write-test.js
+    goto runtest
+)
+if "%choice%"=="4" (
     echo Goodbye!
     goto end
 )
 
 echo Invalid choice. Please try again.
 pause
-goto start
+goto :eof
 
 :runtest
 echo.
@@ -40,7 +45,7 @@ REM Create ConfigMap from scripts directory
 kubectl create configmap k6-scripts --from-file=scripts/ -n k6-loadtest
 
 REM Create temporary job file with the script name substituted
-powershell -Command "(Get-Content k8s\k6-job.yaml) -replace '/scripts/catalog-api-open-model-test.js', '/scripts/%SCRIPT_NAME%' | Set-Content k6-job-temp.yaml"
+powershell -Command "(Get-Content k8s\k6-job.yaml) -replace '/scripts/catalog-api-open-model-read-test.js', '/scripts/%SCRIPT_NAME%' | Set-Content k6-job-temp.yaml"
 
 REM Create new k6 job
 kubectl apply -f k6-job-temp.yaml

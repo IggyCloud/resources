@@ -17,7 +17,7 @@ spec:
       - name: k6
         image: grafana/k6:latest
         command: ["k6"]
-        args: ["run", "-o", "experimental-prometheus-rw", "/scripts/catalog-api-open-model-test.js"]
+        args: ["run", "-o", "experimental-prometheus-rw", "/scripts/catalog-api-open-model-read-test.js"]
         env:
         - name: K6_PROMETHEUS_RW_SERVER_URL
           value: "http://prometheus.default.svc.cluster.local:9090/api/v1/write"
