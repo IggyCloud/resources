@@ -51,7 +51,9 @@
       "mcp__puppeteer__puppeteer_screenshot",
       "mcp__puppeteer__puppeteer_fill",
       "mcp__puppeteer__puppeteer_click",
-      "Bash(http://localhost:30300/api/dashboards/db)"
+      "Bash(http://localhost:30300/api/dashboards/db)",
+      "Bash(cat:*)",
+      "Bash(psql:*)"
     ],
     "deny": [],
     "ask": []
