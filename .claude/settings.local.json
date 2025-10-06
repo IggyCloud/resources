@@ -53,7 +53,11 @@
       "mcp__puppeteer__puppeteer_click",
       "Bash(http://localhost:30300/api/dashboards/db)",
       "Bash(cat:*)",
-      "Bash(psql:*)"
+      "Bash(psql:*)",
+      "Bash(xargs file:*)",
+      "Bash(where python3)",
+      "Bash(where python)",
+      "Bash(C:/Users/Sebastian/AppData/Local/Microsoft/WindowsApps/python3.exe fix-read-1st.py)"
     ],
     "deny": [],
     "ask": []
