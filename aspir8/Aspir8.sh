@@ -27,7 +27,7 @@ aspirate apply --non-interactive --disable-secrets --kube-context "docker-deskto
 
 # Apply resource limits
 echo "⚡ Applying Azure App Service B1 equivalent resource limits..."
-cd ../../../IggyCloudResources
+cd ../../IggyCloudResources
 kubectl apply -f k8s/limit-range.yaml
 
 # Configure observability stack
