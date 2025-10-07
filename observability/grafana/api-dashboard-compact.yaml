@@ -4,7 +4,7 @@ metadata:
   name: grafana-api-dashboard
   namespace: default
 data:
-  api-monitoring-dashboard.json: |
+  api-monitoring-dashboard-compact.json: |
    {
   "annotations": {
     "list": [
