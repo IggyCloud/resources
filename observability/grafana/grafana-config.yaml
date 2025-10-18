@@ -15,9 +15,14 @@ data:
         isDefault: true
         editable: true
       - name: Pyroscope
-        type: pyroscope
+        type: grafana-pyroscope-datasource
         access: proxy
         url: http://pyroscope:4040
+        editable: true
+      - name: Tempo
+        type: tempo
+        access: proxy
+        url: http://tempo:3200
         editable: true
 ---
 apiVersion: v1

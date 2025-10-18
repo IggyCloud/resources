@@ -6,10 +6,12 @@ echo.
 echo Available test scripts:
 echo 1. Catalog API Open Model Test (Read Operations)
 echo 2. Catalog API Closed Model Test (Read Operations)
-echo 3. Catalog API Closed Model Write Test (Write Operations)
-echo 4. Exit
+echo 3. Catalog API Closed Model Test (Read Operations, Quick Version 60s)
+echo 4. Catalog API Closed Model Write Test (Write Operations)
+echo 5. Catalog API Closed Model Write Test (Write Operations, Quick Version 60s)
+echo 6. Exit
 echo.
-set /p choice="Choose a test (1-4): "
+set /p choice="Choose a test (1-5): "
 
 if "%choice%"=="1" (
     set SCRIPT_NAME=catalog-api-open-model-read-test.js
@@ -20,10 +22,18 @@ if "%choice%"=="2" (
     goto runtest
 )
 if "%choice%"=="3" (
-    set SCRIPT_NAME=catalog-api-closed-model-write-test.js
+    set SCRIPT_NAME=catalog-api-closed-model-read-test-quick.js
     goto runtest
 )
 if "%choice%"=="4" (
+    set SCRIPT_NAME=catalog-api-closed-model-write-test.js
+    goto runtest
+)
+if "%choice%"=="5" (
+    set SCRIPT_NAME=catalog-api-closed-model-write-test-quick.js
+    goto runtest
+)
+if "%choice%"=="6" (
     echo Goodbye!
     goto end
 )

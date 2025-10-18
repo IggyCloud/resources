@@ -7,16 +7,6 @@ const errorRate = new Rate('errors');
 export let options = {
   stages: [
     { duration: '60s', target: 50 },
-    { duration: '60s', target: 50 },
-    { duration: '60s', target: 100 }, 
-    { duration: '60s', target: 100 },
-    { duration: '60s', target: 200 }, 
-    { duration: '60s', target: 200 },
-    { duration: '60s', target: 400 },
-    { duration: '60s', target: 400 },
-    { duration: '60s', target: 600 },
-    { duration: '60s', target: 600 },
-    { duration: '30s', target: 0 }, 
   ],
   thresholds: {
     http_req_duration: ['p(95)<500'], 
