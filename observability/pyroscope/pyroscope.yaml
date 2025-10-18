@@ -1,0 +1,108 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: default
+  labels:
+    app.kubernetes.io/part-of: observability
+---
+# Grafana Pyroscope server (single binary). Stores data on node using emptyDir by default.
+# For production, replace emptyDir with a PersistentVolumeClaim.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pyroscope
+  namespace: default
+  labels:
+    app: pyroscope
+    app.kubernetes.io/name: pyroscope
+    app.kubernetes.io/part-of: observability
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pyroscope
+  template:
+    metadata:
+      labels:
+        app: pyroscope
+        app.kubernetes.io/name: pyroscope
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "4040"
+        prometheus.io/path: "/metrics"
+    spec:
+      containers:
+        - name: pyroscope
+          image: grafana/pyroscope:1.12.0
+          imagePullPolicy: IfNotPresent
+          args:
+            - server
+            - --storage-path=/var/lib/pyroscope
+            - --log-level=info
+          ports:
+            - name: http
+              containerPort: 4040
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 4040
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /ready
+              port: 4040
+            initialDelaySeconds: 20
+            periodSeconds: 20
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 1
+              memory: 1Gi
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/pyroscope
+      volumes:
+        - name: data
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pyroscope
+  namespace: default
+  labels:
+    app: pyroscope
+    app.kubernetes.io/name: pyroscope
+spec:
+  type: ClusterIP
+  selector:
+    app: pyroscope
+  ports:
+    - name: http
+      port: 4040
+      targetPort: 4040
+---
+# Optional: expose Pyroscope externally without port-forwarding via NodePort
+# If Grafana is inside the cluster, this is not required.
+apiVersion: v1
+kind: Service
+metadata:
+  name: pyroscope-nodeport
+  namespace: default
+  labels:
+    app: pyroscope
+    app.kubernetes.io/name: pyroscope
+  annotations:
+    usage: "Optional external access for Pyroscope UI and API"
+spec:
+  type: NodePort
+  selector:
+    app: pyroscope
+  ports:
+    - name: http
+      port: 4040
+      targetPort: 4040
+      nodePort: 30440
