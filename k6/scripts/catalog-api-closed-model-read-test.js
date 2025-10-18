@@ -45,5 +45,5 @@ export default function () {
         return false;
       }
     },
-  }) || errorRate.add(1);
+  }) || errorRate.add(1);-
 }

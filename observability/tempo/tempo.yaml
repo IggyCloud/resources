@@ -1,0 +1,195 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: default
+  labels:
+    app.kubernetes.io/part-of: observability
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: tempo-config
+  namespace: default
+  labels:
+    app: tempo
+data:
+  tempo.yaml: |
+    server:
+      http_listen_port: 3200
+      log_level: info
+
+    distributor:
+      receivers:
+        otlp:
+          protocols:
+            http:
+            grpc:
+        jaeger:
+          protocols:
+            grpc:
+            thrift_http:
+        zipkin:
+
+    ingester:
+      lifecycler:
+        ring:
+          kvstore:
+            store: inmemory
+          replication_factor: 1
+      trace_idle_period: 10s
+      max_block_duration: 5m
+
+    compactor:
+      compaction:
+        compacted_block_retention: 24h
+
+    metrics_generator:
+      registry:
+        external_labels:
+          cluster: "eshop"
+          source: tempo
+      storage:
+        path: /var/tempo/generator-wal
+        remote_write:
+          - url: http://prometheus:9090/api/v1/write
+            send_exemplars: true
+
+    storage:
+      trace:
+        backend: local
+        local:
+          path: /var/tempo/traces
+        wal:
+          path: /var/tempo/wal
+
+    querier: {}
+    query_frontend: {}
+    overrides: {}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tempo
+  namespace: default
+  labels:
+    app: tempo
+    app.kubernetes.io/name: tempo
+    app.kubernetes.io/part-of: observability
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tempo
+  template:
+    metadata:
+      labels:
+        app: tempo
+        app.kubernetes.io/name: tempo
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "3200"
+        prometheus.io/path: "/metrics"
+    spec:
+      containers:
+        - name: tempo
+          image: grafana/tempo:2.5.0
+          imagePullPolicy: IfNotPresent
+          args:
+            - -config.file=/etc/tempo/tempo.yaml
+            - -target=all
+          ports:
+            - name: http
+              containerPort: 3200
+            - name: otlp-grpc
+              containerPort: 4317
+            - name: otlp-http
+              containerPort: 4318
+            - name: jaeger-http
+              containerPort: 14268
+            - name: zipkin
+              containerPort: 9411
+          readinessProbe:
+            httpGet:
+              path: /metrics
+              port: 3200
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /metrics
+              port: 3200
+            initialDelaySeconds: 20
+            periodSeconds: 20
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 1
+              memory: 1Gi
+          volumeMounts:
+            - name: config
+              mountPath: /etc/tempo
+            - name: data
+              mountPath: /var/tempo
+      volumes:
+        - name: config
+          configMap:
+            name: tempo-config
+            items:
+              - key: tempo.yaml
+                path: tempo.yaml
+        - name: data
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tempo
+  namespace: default
+  labels:
+    app: tempo
+    app.kubernetes.io/name: tempo
+spec:
+  type: ClusterIP
+  selector:
+    app: tempo
+  ports:
+    - name: http
+      port: 3200
+      targetPort: 3200
+    - name: otlp-grpc
+      port: 4317
+      targetPort: 4317
+    - name: otlp-http
+      port: 4318
+      targetPort: 4318
+    - name: jaeger-http
+      port: 14268
+      targetPort: 14268
+    - name: zipkin
+      port: 9411
+      targetPort: 9411
+---
+# Optional external access (for UI/API). Grafana can reach ClusterIP in-cluster.
+apiVersion: v1
+kind: Service
+metadata:
+  name: tempo-nodeport
+  namespace: default
+  labels:
+    app: tempo
+    app.kubernetes.io/name: tempo
+  annotations:
+    usage: "Optional external access for Tempo UI and API"
+spec:
+  type: NodePort
+  selector:
+    app: tempo
+  ports:
+    - name: http
+      port: 3200
+      targetPort: 3200
+      nodePort: 30320
+
+
