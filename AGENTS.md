@@ -9,7 +9,7 @@
 - `scripts/` - Utilities; includes a pinned `kubectl.exe` for convenience.
 
 ## Build, Test, and Development Commands
-- Deploy eShop: `cd aspir8 && ./Aspir8.sh` (Windows: use WSL/Git Bash) 
+- Deploy eShop: `cd aspir8 && ./Aspir8.sh` (Windows: `"%ProgramFiles%\Git\bin\bash.exe" -lc "cd aspir8 && ./Aspir8.sh"`) 
 - Run k6 tests (Windows): `cd k6 && run-test.bat`
 - Run k6 tests (Linux/macOS): `cd k6 && ./deploy.sh && ./run-test.sh catalog-api-open-model-read-test.js`
 - Apply limits/NodePorts: `k8s/apply-limits.sh`, `k8s/patch-nodeports.sh`
@@ -47,3 +47,54 @@
 - Do not commit credentials; use Kubernetes secrets and local env files.
 - Be mindful of NodePort exposure in `k8s/`; restrict on shared clusters.
 - Confirm `kubectl` context before applying changes. Example: `kubectl config current-context`.
+
+## Observability & Tracing Rules
+- Configure OTLP via appsettings, not ConfigMaps. Use `OTEL_EXPORTER_OTLP_ENDPOINT` and `OTEL_EXPORTER_OTLP_PROTOCOL` in each service's `appsettings*.json`. These are baked into images.
+- ServiceDefaults reads configuration and applies the OTLP exporter for logs, metrics, and traces. Do not add per-service exporter configuration.
+- EF Core tracing is enabled centrally: `OpenTelemetry.Instrumentation.EntityFrameworkCore` is referenced in `eShop.ServiceDefaults` and wired via `.AddEntityFrameworkCoreInstrumentation()`. Avoid duplicating instrumentation in individual services.
+- `Telemetry:PerfMode` (or env var `Telemetry__PerfMode=true`) trims instrumentation for load tests: Pyroscope is disabled, EF/Core/Grpc/HttpClient instrumentation and OTLP log exporting are skipped, and the trace sampler is clamped to ≤1%. Use this flag for k6 runs to prevent tracing from throttling RPS.
+- Tempo is the in-cluster OTLP target (`grpc` at `tempo:4317`). Grafana uses the Tempo datasource for traces.
+- Tempo is the in-cluster OTLP target (`grpc` at `tempo:4317`). Grafana uses the Tempo datasource for traces.
+
+## Database Connection Settings
+- Targets
+  - API pool: use `Maximum Pool Size=300` for Npgsql.
+  - Postgres: `max_connections=400`, `shared_buffers=128MB`, `work_mem=2MB`, `effective_cache_size=1GB`.
+- Persistence (do this in source, not K8s overlays)
+  - Prefer baking connection string settings into `appsettings*.json` in each service image so they survive re-deployments.
+  - Do not hardcode passwords in JSON. Source secrets from Aspire/Aspirate parameters and Kubernetes Secrets.
+- Recommended pattern
+  - Keep pooling/timeouts in appsettings and layer the password via environment/Secret.
+  - Example snippet to place in the service’s `appsettings.Production.json` (source repo):
+    - `"ConnectionStrings": { "catalogdb": "Host=postgres;Port=5432;Database=catalogdb;Maximum Pool Size=300;Timeout=15;Command Timeout=30" }`
+  - Provide the password via environment/Secret at runtime (Aspire/Aspirate). If you combine at runtime in code, read the base string from configuration and append the password from a Secret.
+- Kubernetes overlays
+  - If a temporary override is needed via ConfigMap, ensure `ConnectionStrings__catalogdb` includes `;Maximum Pool Size=300`.
+  - Avoid storing or rotating DB passwords in ConfigMaps or scripts; rely on Aspirate-managed parameters and Secrets.
+- Verification
+  - API: `kubectl -n default get configmap catalog-api-env -o json | jq -r '.data["ConnectionStrings__catalogdb"]'`
+  - DB: `show max_connections; show shared_buffers; show work_mem; show effective_cache_size;`
+
+## Aspir8/Aspirate Rules
+- Do not patch OTLP exporter env via ConfigMaps from `aspir8/Aspir8.sh`. OTLP endpoint comes from appsettings.
+- `aspir8/Aspir8.sh` accepts `PERF_MODE=true ./Aspir8.sh` (Git Bash/WSL) to roll out the `Telemetry__PerfMode` flag across every deployment; omit or set `false` for the normal observability profile.
+- Do not reconcile or rewrite database passwords in scripts. PostgreSQL password and all connection strings are sourced from Aspire manifest parameters (e.g., `postgres-password`) and persisted `aspirate-state.json`.
+- Rely on Aspirate-generated manifests and Kubernetes Secrets for credentials. Avoid committing plaintext secrets.
+
+## Operational Runbook
+- Traces to Tempo
+- After `aspirate apply`, ensure OTLP exports go to Tempo gRPC via the baked appsettings; the deployment script no longer patches ConfigMaps.
+- `PERF_MODE=true ./Aspir8.sh` enables the perf telemetry profile cluster-wide (sets `Telemetry__PerfMode=true` on each deployment and restarts them). Use this before k6 runs; rerun without `PERF_MODE` afterward to restore full observability.
+- Secrets and rotations
+  - Keep `src/eShop.AppHost/aspirate-state.json` stable to avoid rotating `postgres/redis/rabbitmq` passwords unintentionally.
+  - If Postgres password rotates but PVC persists, auth will fail. Either do not rotate, or delete the Postgres StatefulSet AND its PVC to reinitialize with the new password.
+  - For Redis/RabbitMQ rotations, rollout restart their deployments and dependent services (e.g., Basket.API, Catalog.API) to pick up new env/config.
+- NodePorts
+  - Grafana Service must be NodePort 30300; WebApp 30080; Basket API 30081. `aspir8/Aspir8.sh` and `k8s/patch-nodeports.sh` enforce this.
+- Logs vs Traces
+  - Application logs go to Loki via Promtail DaemonSet; OTLP logs to Tempo are not used. Query Loki by `app` label and message text (e.g., `{app="webapp"} |= "Exception"`).
+  - Optional: add Promtail stage to extract `level` from log text if `level="error"` queries are desired.
+- Troubleshooting
+  - Terminate k6: `kubectl delete job k6-load-test -n k6-loadtest`.
+  - Force services to pick up new config: `kubectl rollout restart deploy/<name>` then `kubectl rollout status ...`.
+  - If Grafana goes unreachable, ensure Service type is NodePort with `nodePort: 30300`.
