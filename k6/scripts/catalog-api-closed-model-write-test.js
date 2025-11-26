@@ -3,6 +3,7 @@ import { check, sleep } from 'k6';
 import { Rate } from 'k6/metrics';
 
 const errorRate = new Rate('errors');
+const BASE_URL = __ENV.BASE_URL || 'http://catalog-api.default.svc.cluster.local:8080';
 
 export let options = {
   stages: [
@@ -24,8 +25,6 @@ export let options = {
     errors: ['rate<0.05'],
   },
 };
-
-const CATALOG_API_URL = 'http://catalog-api.default.svc.cluster.local:8080';
 const TEST_TIMESTAMP = Date.now();
 
 export function setup() {
@@ -37,7 +36,7 @@ export function setup() {
   };
 
   // Get catalog types
-  let typesResponse = http.get(`${CATALOG_API_URL}/api/catalog/catalogtypes?api-version=1.0`, {
+  let typesResponse = http.get(`${BASE_URL}/api/catalog/catalogtypes?api-version=1.0`, {
     headers: { 'Accept': 'application/json' }
   });
 
@@ -53,7 +52,7 @@ export function setup() {
   }
 
   // Get catalog brands
-  let brandsResponse = http.get(`${CATALOG_API_URL}/api/catalog/catalogbrands?api-version=1.0`, {
+  let brandsResponse = http.get(`${BASE_URL}/api/catalog/catalogbrands?api-version=1.0`, {
     headers: { 'Accept': 'application/json' }
   });
 
@@ -98,7 +97,7 @@ export default function (data) {
   const testItem = generateTestItem(data);
 
   // Test POST - Create Item
-  let createResponse = http.post(`${CATALOG_API_URL}/api/catalog/items?api-version=1.0`,
+  let createResponse = http.post(`${BASE_URL}/api/catalog/items?api-version=1.0`,
     JSON.stringify(testItem),
     {
       headers: {

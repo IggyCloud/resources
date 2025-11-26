@@ -52,14 +52,14 @@
 - Configure OTLP via appsettings, not ConfigMaps. Use `OTEL_EXPORTER_OTLP_ENDPOINT` and `OTEL_EXPORTER_OTLP_PROTOCOL` in each service's `appsettings*.json`. These are baked into images.
 - ServiceDefaults reads configuration and applies the OTLP exporter for logs, metrics, and traces. Do not add per-service exporter configuration.
 - EF Core tracing is enabled centrally: `OpenTelemetry.Instrumentation.EntityFrameworkCore` is referenced in `eShop.ServiceDefaults` and wired via `.AddEntityFrameworkCoreInstrumentation()`. Avoid duplicating instrumentation in individual services.
-- `Telemetry:PerfMode` (or env var `Telemetry__PerfMode=true`) trims instrumentation for load tests: Pyroscope is disabled, EF/Core/Grpc/HttpClient instrumentation and OTLP log exporting are skipped, and the trace sampler is clamped to ≤1%. Use this flag for k6 runs to prevent tracing from throttling RPS.
-- Tempo is the in-cluster OTLP target (`grpc` at `tempo:4317`). Grafana uses the Tempo datasource for traces.
+- `Telemetry:PerfMode` (or env var `Telemetry__PerfMode=true`) trims instrumentation for load tests: Pyroscope is disabled, EF/Core/Grpc/HttpClient instrumentation and OTLP log exporting are skipped, and the trace sampler is clamped to <=1%. Use this flag for k6 runs to prevent tracing from throttling RPS.
+- To capture traces/logs again, set `Telemetry__PerfMode=false` (or remove the var) on the target deployment(s) and restart before debugging.
 - Tempo is the in-cluster OTLP target (`grpc` at `tempo:4317`). Grafana uses the Tempo datasource for traces.
 
 ## Database Connection Settings
 - Targets
   - API pool: use `Maximum Pool Size=300` for Npgsql.
-  - Postgres: `max_connections=400`, `shared_buffers=128MB`, `work_mem=2MB`, `effective_cache_size=1GB`.
+  - Postgres (k8s default pod): tune for 2 GB RAM / SSD / 400 connections — `max_connections=400`, `shared_buffers=512MB`, `effective_cache_size=1536MB`, `work_mem=1285kB`, `maintenance_work_mem=128MB`, `checkpoint_completion_target=0.9`, `wal_buffers=16MB`, `default_statistics_target=100`, `random_page_cost=1.1`, `effective_io_concurrency=200`, `huge_pages=off`, `min_wal_size=1GB`, `max_wal_size=4GB`.
 - Persistence (do this in source, not K8s overlays)
   - Prefer baking connection string settings into `appsettings*.json` in each service image so they survive re-deployments.
   - Do not hardcode passwords in JSON. Source secrets from Aspire/Aspirate parameters and Kubernetes Secrets.
@@ -71,6 +71,8 @@
 - Kubernetes overlays
   - If a temporary override is needed via ConfigMap, ensure `ConnectionStrings__catalogdb` includes `;Maximum Pool Size=300`.
   - Avoid storing or rotating DB passwords in ConfigMaps or scripts; rely on Aspirate-managed parameters and Secrets.
+  - `scripts/tune-postgres.sh` patches the ConfigMap, runs the matching `ALTER SYSTEM` statements, and restarts the StatefulSet; `aspir8/Aspir8.sh` invokes it automatically after every deploy. Run it manually (`bash scripts/tune-postgres.sh`) if you tweak Postgres outside the normal pipeline.
+  - `scripts/deploy-pgbadger.sh` patches the `postgres` StatefulSet with `pgbadger` + `nginx` sidecars and exposes them via the `pgbadger` NodePort service (`http://localhost:30305`). Aspir8 runs it automatically; rerun manually if you recycle the StatefulSet outside the script.
 - Verification
   - API: `kubectl -n default get configmap catalog-api-env -o json | jq -r '.data["ConnectionStrings__catalogdb"]'`
   - DB: `show max_connections; show shared_buffers; show work_mem; show effective_cache_size;`
@@ -98,3 +100,4 @@
   - Terminate k6: `kubectl delete job k6-load-test -n k6-loadtest`.
   - Force services to pick up new config: `kubectl rollout restart deploy/<name>` then `kubectl rollout status ...`.
   - If Grafana goes unreachable, ensure Service type is NodePort with `nodePort: 30300`.
+
