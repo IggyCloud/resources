@@ -63,7 +63,15 @@ data:
           path: /var/tempo/wal
 
     querier: {}
-    query_frontend: {}
+    query_frontend:
+      search:
+        max_duration: 168h
+        max_entries_limit_per_query: 10000
+        results_cache:
+          cache:
+            enable_fifocache: true
+            fifocache:
+              size: 1024
     overrides: {}
 ---
 apiVersion: apps/v1
