@@ -121,7 +121,7 @@ spec:
           name: metrics
         env:
         - name: DATA_SOURCE_NAME
-          value: "postgresql://postgres:5mt1gDF2B6cNmsrjygTZVz@postgres:5432/postgres?sslmode=disable"
+          value: "postgresql://postgres:iJcLOimYjiT9vmqgMHxAaS@postgres:5432/postgres?sslmode=disable"
         - name: PG_EXPORTER_EXTEND_QUERY_PATH
           value: "/etc/queries/postgres-queries.yaml"
         volumeMounts:
