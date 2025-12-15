@@ -14,6 +14,11 @@
 - Run k6 tests (Linux/macOS): `cd k6 && ./deploy.sh && ./run-test.sh catalog-api-open-model-read-test.js`
 - Apply limits/NodePorts: `k8s/apply-limits.sh`, `k8s/patch-nodeports.sh`
 - Observability post-deploy: `cd observability && ./scripts/post-deploy-monitoring.sh`
+- Learnings (recent incidents)
+  - Keep DB password aligned: `postgres-env` (live password) must match all app connection strings. If you rotate or re-seed Postgres, immediately patch app ConfigMaps/secrets (e.g., `catalog-api-env`) or rerun aspir8 with the current password, then restart deployments.
+  - Pool caps vs max_connections: Npgsql defaults to 100. If you raise `Maximum Pool Size` (e.g., 300), ensure Postgres `max_connections` has headroom and that other clients (exporter/pgAdmin) won’t exhaust the limit. Adjust in AppHost manifest so aspir8 regeneration preserves it.
+  - NodePort/service patches: aspir8 re-applies ClusterIP services. If you need NodePorts (catalog-api 30509, etc.), patch after aspir8 or bake NodePort into manifests. Conflicts will appear on re-apply; use `--force-conflicts` only if you intend to own those fields.
+  - pgBadger CPU drain: pgBadger sidecar can peg 1 CPU parsing large `pg_log`. Disable or cap it for load tests; trim logs before enabling.
 
 ## Coding Style & Naming Conventions
 - YAML/JSON: 2-space indent, lowercase keys; avoid trailing spaces.
@@ -100,4 +105,3 @@
   - Terminate k6: `kubectl delete job k6-load-test -n k6-loadtest`.
   - Force services to pick up new config: `kubectl rollout restart deploy/<name>` then `kubectl rollout status ...`.
   - If Grafana goes unreachable, ensure Service type is NodePort with `nodePort: 30300`.
-

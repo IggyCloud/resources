@@ -17,10 +17,16 @@ export let options = {
     { duration: '60s', target: 400 },
     { duration: '60s', target: 600 },
     { duration: '60s', target: 600 },
+    { duration: '60s', target: 800 },
+    { duration: '60s', target: 800 },
+    { duration: '60s', target: 1000 },
+    { duration: '60s', target: 1000 },
+    { duration: '60s', target: 1200 },
+    { duration: '60s', target: 1200 },
     { duration: '30s', target: 0 }, 
   ],
   thresholds: {
-    http_req_duration: ['p(95)<500'], 
+    http_req_duration: ['p(95)<300'], 
     http_req_failed: ['rate<0.01'], 
     errors: ['rate<0.01'], 
   },
@@ -36,7 +42,7 @@ export default function () {
 
   check(catalogResponse, {
     'catalog API status is 200': (r) => r.status === 200,
-    'catalog API response time < 500ms': (r) => r.timings.duration < 500,
+    'catalog API response time < 300ms': (r) => r.timings.duration < 500,
     'catalog API returns JSON data': (r) => {
       try {
         const data = JSON.parse(r.body);
