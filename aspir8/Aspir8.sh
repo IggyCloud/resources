@@ -4,8 +4,9 @@ set -euo pipefail
 # This script deploys the entire eShop solution with monitoring and performance testing
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-ROOT_DIR="$(cd "${SCRIPT_DIR}/.." && pwd)"
-ESHOP_SRC_DIR="$(cd "${ROOT_DIR}/../src" && pwd)"
+# Repository layout has eShop solution under ./eShop at the repo root (two levels up from here)
+ROOT_DIR="$(cd "${SCRIPT_DIR}/../.." && pwd)"
+ESHOP_SRC_DIR="$(cd "${ROOT_DIR}/eShop/src" && pwd)"
 APPHOST_DIR="${ESHOP_SRC_DIR}/eShop.AppHost"
 
 echo "[aspir8] Starting complete eShop IaC deployment..."

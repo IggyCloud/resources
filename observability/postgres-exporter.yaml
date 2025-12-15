@@ -121,7 +121,7 @@ spec:
           name: metrics
         env:
         - name: DATA_SOURCE_NAME
-          value: "postgresql://postgres:iJcLOimYjiT9vmqgMHxAaS@postgres:5432/postgres?sslmode=disable"
+          value: "postgresql://postgres:iJcLOimYjiT9vmqgMHxAaS@postgres-0.postgres.default.svc.cluster.local:5432/postgres?sslmode=disable"
         - name: PG_EXPORTER_EXTEND_QUERY_PATH
           value: "/etc/queries/postgres-queries.yaml"
         volumeMounts:
@@ -131,10 +131,10 @@ spec:
         resources:
           requests:
             memory: "64Mi"
-            cpu: "50m"
+            cpu: "500m"
           limits:
             memory: "128Mi"
-            cpu: "100m"
+            cpu: "1000m"
         livenessProbe:
           httpGet:
             path: /metrics
