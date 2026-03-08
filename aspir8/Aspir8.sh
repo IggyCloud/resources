@@ -40,7 +40,7 @@ cd "${ROOT_DIR}"
 kubectl apply -f k8s/limit-range.yaml
 
 echo "[catalog-conn] Ensuring catalog connection string has pooling and timeouts..."
-bash ./scripts/patch-catalog-connection.sh
+powershell.exe -ExecutionPolicy Bypass -File ./resources/scripts/patch-catalog-connection.ps1
 
 # Configure observability stack
 echo "[aspir8] Configuring observability stack..."

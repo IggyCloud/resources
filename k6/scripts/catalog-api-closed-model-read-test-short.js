@@ -1,0 +1,55 @@
+import http from 'k6/http';
+import { check, sleep } from 'k6';
+import { Rate } from 'k6/metrics';
+
+const errorRate = new Rate('errors');
+const BASE_URL = __ENV.BASE_URL || 'http://catalog-api.default.svc.cluster.local:8080';
+
+export let options = {
+  stages: [
+    { duration: '20s', target: 50 },
+    { duration: '20s', target: 50 },
+    { duration: '20s', target: 100 }, 
+    { duration: '20s', target: 100 },
+    { duration: '20s', target: 200 }, 
+    { duration: '20s', target: 200 },
+    { duration: '20s', target: 400 },
+    { duration: '20s', target: 400 },
+    { duration: '20s', target: 600 },
+    { duration: '20s', target: 600 },
+    { duration: '20s', target: 800 },
+    { duration: '20s', target: 800 },
+    { duration: '20s', target: 1000 },
+    { duration: '20s', target: 1000 },
+    { duration: '20s', target: 1200 },
+    { duration: '20s', target: 1200 },
+    { duration: '10s', target: 0 }, 
+  ],
+  thresholds: {
+    http_req_duration: ['p(95)<300'], 
+    http_req_failed: ['rate<0.01'], 
+    errors: ['rate<0.01'], 
+  },
+};
+
+export default function () {
+  let catalogResponse = http.get(`${BASE_URL}/api/catalog/items?api-version=1.0`, {
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    },
+  });
+
+  check(catalogResponse, {
+    'catalog API status is 200': (r) => r.status === 200,
+    'catalog API response time < 300ms': (r) => r.timings.duration < 500,
+    'catalog API returns JSON data': (r) => {
+      try {
+        const data = JSON.parse(r.body);
+        return data && data.data && Array.isArray(data.data);
+      } catch (e) {
+        return false;
+      }
+    },
+  }) || errorRate.add(1);
+}

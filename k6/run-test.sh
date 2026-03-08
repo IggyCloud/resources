@@ -32,8 +32,8 @@ kubectl create configmap k6-scripts --from-file=scripts/ -n k6-loadtest
 sed "s|/scripts/catalog-api-open-model-test.js|/scripts/$SCRIPT_NAME|g" k8s/k6-job.yaml > /tmp/k6-job-temp.yaml
 
 # Create new k6 service and job
-kubectl apply -f k8s/k6-service.yaml
-kubectl apply -f /tmp/k6-job-temp.yaml
+kubectl apply -f k8s/k6-service.yaml -n k6-loadtest
+kubectl apply -f /tmp/k6-job-temp.yaml -n k6-loadtest
 
 # Clean up temporary fileznajdz 
 rm /tmp/k6-job-temp.yaml
