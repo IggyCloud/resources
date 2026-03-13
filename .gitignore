@@ -1,7 +1,46 @@
-﻿################################################################################
-# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
-################################################################################
+# --- Terraform ---
+.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
+*.tar
+*.zip
+*.gz
 
-/.vs
-.claude/settings.local.json
+# --- Binaries & Large Files ---
+*.exe
+*.dll
+*.so
+*.dylib
+*.sql
+
+# --- Aspirate ---
+aspirate-output/
+aspirate-state.json
+aspirate.json
+
+# --- VS / IDE ---
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# --- General ---
+.DS_Store
+Thumbs.db
 settings.local.json
+.claude/
+.history/
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# --- Environment ---
+.env
+.env.*
+!.env.example
