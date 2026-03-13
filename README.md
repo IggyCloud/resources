@@ -1,85 +1,66 @@
-# IggyCloud eShop Resources
+# IggyCloud eShop Resources - Performance Engineering & Deployment
 
-Kubernetes deployment and performance testing resources for .NET eShop.
+This directory contains the infrastructure, deployment, and performance testing suite for the IggyCloud eShop project. It serves as the technical core for our experiments in scaling, database optimization, and high-load API engineering.
+
+## IggyCloud Context
+
+These resources accompany the [IggyCloud YouTube channel](https://www.youtube.com/@IggyCloud) and [IggyCloud.com](https://iggycloud.com). Here, we test various architectural solutions to maximize RPS (Requests Per Second) and Virtual Users (VUs).
+
+Key focus areas:
+- **Horizontal Scaling**: Testing how the system behaves under horizontal load.
+- **Resource Constraints**: Mimicking Azure B1 tiers (1 vCPU, 1GB RAM) to enforce strict engineering boundaries.
+- **Database Mastery**: Deep dives into Postgres, pgvector, replication, and pgpool.
+
+The empirical results of our experiments can be found in the [evidence](./evidence) folder.
 
 ## Quick Start
 
-### Deploy to Kubernetes
+### Deploy to Kubernetes (Terraform) - RECOMMENDED
+We use Terraform for predictable, stable deployments. Unlike generated manifests, this approach ensures stable credentials and consistent resource boundaries.
+
 ```bash
-cd aspir8/
-./Aspir8.sh
+cd terraform
+terraform init
+terraform apply
 ```
 
-### Run Performance Tests
+### Reddeploying After Code Changes
+If you modify the Catalog API source code, use the automation script to build and rollout the new version:
+```batch
+cd terraform
+redeploy-catalog-api.bat
+```
 
-#### Windows (Interactive)
+### Run Performance Tests (k6)
+
+#### Windows (Interactive Menu)
 ```batch
 cd k6
 run-test.bat
 ```
 
-#### Linux/Unix (Command line)
+#### Linux/Unix
 ```bash
 cd k6/
 ./deploy.sh
 ./run-test.sh catalog-api-open-model-read-test.js
 ```
 
-#### Available Tests
-- **Catalog API Open Model Read Test** - High-load read operations (open loop)
-- **Catalog API Closed Model Read Test** - Controlled read operations (closed loop)
-- **Catalog API Closed Model Write Test** - CRUD operations testing (POST/PUT/DELETE)
+## Accessing Services (Localhost)
+- **Catalog API**: [http://localhost:5101/health](http://localhost:5101/health)
+- **Grafana**: [http://localhost:30300](http://localhost:30300) (admin/admin123)
+- **Prometheus**: [http://localhost:30090](http://localhost:30090)
+- **Postgres Hero**: [http://localhost:30050](http://localhost:30050)
 
-### Access Services
-- eShop: http://localhost:30509
-- Grafana: http://localhost:30300 (admin/admin123)
-- Prometheus: http://localhost:30090
-
-## K6 Performance Testing
-
-### Test Naming Convention
-
-All k6 test files follow this naming pattern:
-```
-{service}-{model}-{operation}-test.js
-```
-
-Where:
-- **service**: API being tested (e.g., `catalog-api`, `order-api`)
-- **model**: Load model type (`open-model` or `closed-model`)
-- **operation**: Type of operations (`read`, `write`, `mixed`)
-
-### Load Models
-
-- **Open Model**: High-throughput testing with unlimited virtual users and arrival rates
-- **Closed Model**: Controlled testing with fixed number of virtual users and thinking time
-
-### Current Test Suite
-
-| Test File | Description | Operations | Load Model |
-|-----------|-------------|------------|-------------|
-| `catalog-api-open-model-read-test.js` | High-load read testing | GET only | Open (arrival rate) |
-| `catalog-api-closed-model-read-test.js` | Controlled read testing | GET only | Closed (fixed VUs) |
-| `catalog-api-closed-model-write-test.js` | CRUD operations testing | POST/PUT/DELETE/GET | Closed (fixed VUs) |
-
-### Adding New Tests
-
-When creating new test files, follow the naming convention and update:
-1. `run-test.bat` - Add menu option and script name
-2. `README.md` - Document the new test
-3. Consider load model appropriateness for the test scenario
-
-## Structure
-
-- `aspir8/` - Aspirate deployment scripts
-- `k6/` - Load testing suite with Grafana monitoring
-  - `scripts/` - K6 test scripts following naming convention
-  - `k8s/` - Kubernetes Job configurations for k6
-- `observability/` - Prometheus & Grafana configurations
-- `k8s/` - Kubernetes manifests
+## Repository Structure
+- `terraform/`: Consolidated IaC for the core solution (API, DB, EventBus).
+- `k6/`: Load testing suite with arrival-rate and fixed-VU models.
+- `evidence/`: Historical data and screenshots of performance breakthroughs.
+- `observability/`: Configurations for the LGTM stack (Loki, Grafana, Tempo, Mimir/Prometheus).
+- `pgpool/` & `scripts/`: Advanced database tuning and replication resources.
 
 ## Prerequisites
-
-- Docker Desktop with Kubernetes
-- .NET 9 SDK
-- kubectl configured for docker-desktop
+- Docker Desktop with Kubernetes enabled.
+- .NET 9 SDK.
+- Terraform CLI.
+- kubectl configured for `docker-desktop`.
