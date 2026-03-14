@@ -47,7 +47,7 @@ cd k6/
 ```
 
 ## Accessing Services (Localhost)
-- **Catalog API**: [http://localhost:5101/health](http://localhost:5101/health)
+- **Catalog API**: [http://localhost:8080/health](http://localhost:8080/health)
 - **Grafana**: [http://localhost:30300](http://localhost:30300) (admin/admin123)
 - **Prometheus**: [http://localhost:30090](http://localhost:30090)
 - **Postgres Hero**: [http://localhost:30050](http://localhost:30050)
