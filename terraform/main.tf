@@ -121,7 +121,7 @@ resource "kubernetes_stateful_set_v1" "postgres" {
         access_modes = ["ReadWriteOnce"]
         resources {
           requests = {
-            storage = "1Gi"
+            storage = "5Gi"
           }
         }
       }
