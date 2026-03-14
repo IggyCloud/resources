@@ -151,12 +151,112 @@
       "type": "timeseries"
     },
     {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "description": "Rate of committed transactions per replica pod, showing how the K8s Service load balances read traffic.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "TPS",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 20,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 16
+      },
+      "id": 206,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "12.4.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "expr": "sum(irate(pg_stat_database_xact_commit{job=\"postgres-exporter\", pod=~\"postgres.*\"}[1m])) by (pod)",
+          "legendFormat": "{{pod}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "🔄 Read Traffic Split (Transactions per Second)",
+      "type": "timeseries"
+    },
+    {
       "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 16
+        "y": 25
       },
       "id": 101,
       "panels": [],
@@ -236,7 +336,7 @@
         "h": 12,
         "w": 12,
         "x": 0,
-        "y": 17
+        "y": 26
       },
       "id": 3,
       "options": {
@@ -355,7 +455,7 @@
         "h": 12,
         "w": 12,
         "x": 12,
-        "y": 17
+        "y": 26
       },
       "id": 2,
       "options": {
@@ -478,7 +578,7 @@
         "h": 10,
         "w": 12,
         "x": 0,
-        "y": 29
+        "y": 38
       },
       "id": 4,
       "options": {
@@ -589,7 +689,7 @@
         "h": 10,
         "w": 12,
         "x": 12,
-        "y": 29
+        "y": 38
       },
       "id": 5,
       "options": {
@@ -688,7 +788,7 @@
         "h": 9,
         "w": 8,
         "x": 0,
-        "y": 39
+        "y": 48
       },
       "id": 8,
       "options": {
@@ -794,7 +894,7 @@
         "h": 9,
         "w": 9,
         "x": 8,
-        "y": 39
+        "y": 48
       },
       "id": 7,
       "options": {
@@ -897,7 +997,7 @@
         "h": 9,
         "w": 7,
         "x": 17,
-        "y": 39
+        "y": 48
       },
       "id": 9,
       "options": {
@@ -938,7 +1038,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 48
+        "y": 57
       },
       "id": 200,
       "panels": [],
@@ -1018,7 +1118,7 @@
         "h": 14,
         "w": 12,
         "x": 0,
-        "y": 49
+        "y": 58
       },
       "id": 203,
       "options": {
@@ -1134,7 +1234,7 @@
         "h": 14,
         "w": 12,
         "x": 12,
-        "y": 49
+        "y": 58
       },
       "id": 204,
       "options": {
@@ -1257,7 +1357,7 @@
         "h": 14,
         "w": 12,
         "x": 0,
-        "y": 63
+        "y": 72
       },
       "id": 205,
       "options": {
@@ -1428,7 +1528,7 @@
         "h": 14,
         "w": 12,
         "x": 12,
-        "y": 63
+        "y": 72
       },
       "id": 202,
       "options": {
@@ -1494,6 +1594,6 @@
   "timezone": "browser",
   "title": "eShop Performance Compare Dashboard 2",
   "uid": "eshop-compare-performance2",
-  "version": 6,
+  "version": 7,
   "weekStart": ""
 }

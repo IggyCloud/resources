@@ -404,7 +404,7 @@ resource "kubernetes_deployment_v1" "catalog_api" {
 
           env {
             name  = "ConnectionStrings__catalogdb"
-            value = "Host=postgres-replica;Port=5432;Database=catalogdb;Username=postgres;Password=password;Maximum Pool Size=300"
+            value = "Host=postgres-primary;Port=5432;Database=catalogdb;Username=postgres;Password=password;Maximum Pool Size=300"
           }
 
           env {
