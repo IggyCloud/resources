@@ -231,6 +231,7 @@ resource "kubernetes_stateful_set_v1" "postgres_replica" {
             "-c", "log_disconnections=off",
             "-c", "log_destination=stderr"
           ]
+          // Database limits
           resources {
             limits = {
               cpu    = "1"
