@@ -18,7 +18,7 @@ resource "kubernetes_service_v1" "postgres_primary" {
   }
   spec {
     selector = {
-      app = "postgres-primary"
+      app = "postgres-primary"+
     }
     port {
       port        = 5432
