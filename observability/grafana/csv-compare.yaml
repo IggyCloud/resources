@@ -1,305 +1,1680 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: grafana-compare-dashboard
-  namespace: default
-data:
-  csv-compare-dashboard.json: |
+{
+  "__inputs": [
     {
-      "annotations": {
-        "list": [
+      "name": "DS_YESOREYERAM-INFINITY-DATASOURCE",
+      "label": "yesoreyeram-infinity-datasource",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "yesoreyeram-infinity-datasource",
+      "pluginName": "Infinity"
+    }
+  ],
+  "__elements": {},
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "12.4.2"
+    },
+    {
+      "type": "panel",
+      "id": "stat",
+      "name": "Stat",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "timeseries",
+      "name": "Time series",
+      "version": ""
+    },
+    {
+      "type": "datasource",
+      "id": "yesoreyeram-infinity-datasource",
+      "name": "Infinity",
+      "version": "3.7.4"
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      },
+      {
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
+        "enable": true,
+        "hide": false,
+        "iconColor": "red",
+        "name": "Source",
+        "target": {
+          "expr": "",
+          "interval": "",
+          "limit": 10,
+          "refId": "Anno",
+          "type": "dashboard"
+        }
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 2,
+  "links": [],
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 8,
+      "panels": [],
+      "title": "Read",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Dashboard --"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 4,
+        "x": 1,
+        "y": 1
+      },
+      "id": 4,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.4.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Dashboard --"
+          },
+          "panelId": 1,
+          "refId": "A"
+        }
+      ],
+      "title": "Read - VU",
+      "transformations": [
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "byVariable": false,
+            "include": {
+              "pattern": ".*VU.*|^Time$"
+            }
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Dashboard --"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 9,
+        "x": 8,
+        "y": 1
+      },
+      "id": 3,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "12.4.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Dashboard --"
+          },
+          "panelId": 1,
+          "refId": "A"
+        }
+      ],
+      "title": "Read - RPS [Req/s]",
+      "transformations": [
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "byVariable": false,
+            "include": {
+              "pattern": ".*Requests.*|^Time$"
+            }
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Dashboard --"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": [
           {
-            "builtIn": 1,
-            "datasource": "-- Grafana --",
-            "enable": true,
-            "hide": true,
-            "iconColor": "rgba(0, 211, 255, 1)",
-            "name": "Annotations & Alerts",
-            "type": "dashboard"
+            "__systemRef": "hideSeriesFrom",
+            "matcher": {
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": [
+                  "5-readreplicas Requests"
+                ],
+                "prefix": "All except:",
+                "readOnly": true
+              }
+            },
+            "properties": []
           }
         ]
       },
-      "description": "eShop API Performance Comparison Dashboard",
-      "editable": true,
-      "fiscalYearStartMonth": 0,
-      "graphTooltip": 1,
-      "id": 0,
-      "links": [],
-      "panels": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisLabel": "ms",
-                "drawStyle": "line",
-                "fillOpacity": 10,
-                "lineInterpolation": "smooth",
-                "lineWidth": 2
-              },
-              "mappings": [],
-              "unit": "ms"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 12,
-            "w": 24,
-            "x": 0,
-            "y": 0
-          },
-          "id": 1,
-          "options": {
-            "legend": {
-              "displayMode": "table",
-              "placement": "bottom",
-              "showLegend": true
-            },
-            "tooltip": {
-              "mode": "multi",
-              "sort": "desc"
-            }
-          },
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "prometheus"
-              },
-              "expr": "histogram_quantile(0.95, rate(http_server_request_duration_seconds_bucket[5m])) * 1000",
-              "legendFormat": "P95 | {{job}}",
-              "refId": "A"
-            }
+      "gridPos": {
+        "h": 9,
+        "w": 4,
+        "x": 20,
+        "y": 1
+      },
+      "id": 6,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "median"
           ],
-          "title": "Response Time Comparison (P95)",
-          "type": "timeseries"
+          "fields": "",
+          "values": false
         },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.2",
+      "targets": [
         {
           "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
+            "type": "datasource",
+            "uid": "-- Dashboard --"
           },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisLabel": "reqps",
-                "drawStyle": "line",
-                "fillOpacity": 20,
-                "lineInterpolation": "smooth",
-                "lineWidth": 2
-              },
-              "mappings": [],
-              "unit": "reqps"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 12,
-            "w": 24,
-            "x": 0,
-            "y": 12
-          },
-          "id": 2,
-          "options": {
-            "legend": {
-              "displayMode": "table",
-              "placement": "bottom",
-              "showLegend": true
-            },
-            "tooltip": {
-              "mode": "multi",
-              "sort": "desc"
-            }
-          },
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "prometheus"
-              },
-              "expr": "rate(http_server_request_duration_seconds_count[5m])",
-              "legendFormat": "RPS | {{job}}",
-              "refId": "A"
-            }
-          ],
-          "title": "Throughput Comparison (RPS)",
-          "type": "timeseries"
+          "panelId": 1,
+          "refId": "A"
         }
       ],
-      "schemaVersion": 37,
-      "style": "dark",
-      "tags": ["eShop", "API", "compare"],
-      "templating": {
-        "list": []
-      },
-      "time": {
-        "from": "now-1h",
-        "to": "now"
-      },
-      "timepicker": {},
-      "timezone": "",
-      "title": "eShop Performance Compare Dashboard",
-      "uid": "eshop-compare-performance",
-      "version": 1
-    }
-  compare-dashboard-v2.json: |
+      "title": "Read - RPS",
+      "transformations": [
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "byVariable": false,
+            "include": {
+              "pattern": ".*Requests.*|^Time$"
+            }
+          }
+        }
+      ],
+      "type": "stat"
+    },
     {
-      "annotations": {
-        "list": [
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Dashboard --"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
           {
-            "builtIn": 1,
-            "datasource": "-- Grafana --",
-            "enable": true,
-            "hide": true,
-            "iconColor": "rgba(0, 211, 255, 1)",
-            "name": "Annotations & Alerts",
-            "type": "dashboard"
+            "__systemRef": "hideSeriesFrom",
+            "matcher": {
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": [
+                  "2-MaxConnections Response Time",
+                  "3-EasyBatch Response Time",
+                  "4-Indexes Response Time",
+                  "5-readreplicas Response Time"
+                ],
+                "prefix": "All except:",
+                "readOnly": true
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": true,
+                  "viz": true
+                }
+              }
+            ]
           }
         ]
       },
-      "description": "eShop API Performance Comparison Dashboard with Replica Split Monitoring",
-      "editable": true,
-      "fiscalYearStartMonth": 0,
-      "graphTooltip": 1,
-      "id": null,
-      "links": [],
-      "panels": [
-        {
-          "collapsed": false,
-          "gridPos": { "h": 1, "w": 24, "x": 0, "y": 0 },
-          "id": 300,
-          "panels": [],
-          "title": "📊 Replica Traffic Distribution",
-          "type": "row"
+      "gridPos": {
+        "h": 10,
+        "w": 9,
+        "x": 8,
+        "y": 12
+      },
+      "id": 5,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
         },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.4.2",
+      "targets": [
         {
-          "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "description": "Rate of committed transactions per replica pod, showing how the K8s Service load balances read traffic.",
-          "fieldConfig": {
-            "defaults": {
-              "color": { "mode": "palette-classic" },
-              "custom": {
-                "axisLabel": "TPS",
-                "drawStyle": "line",
-                "fillOpacity": 20,
-                "lineInterpolation": "smooth",
-                "lineWidth": 2
-              },
-              "mappings": [],
-              "unit": "short"
-            }
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Dashboard --"
           },
-          "gridPos": { "h": 10, "w": 24, "x": 0, "y": 1 },
-          "id": 301,
-          "options": {
-            "legend": { "displayMode": "table", "placement": "bottom", "showLegend": true },
-            "tooltip": { "mode": "multi", "sort": "desc" }
-          },
-          "targets": [
-            {
-              "datasource": { "type": "prometheus", "uid": "prometheus" },
-              "editorMode": "code",
-              "expr": "sum(irate(pg_stat_database_xact_commit{job=\"postgres-exporter\", pod=~\"postgres-replica-.*\"}[1m])) by (pod)",
-              "legendFormat": "{{pod}}",
-              "range": true,
-              "refId": "A"
-            }
-          ],
-          "title": "🔄 Read Traffic Split (Transactions per Second)",
-          "type": "timeseries"
-        },
-        {
-          "collapsed": false,
-          "gridPos": { "h": 1, "w": 24, "x": 0, "y": 11 },
-          "id": 100,
-          "panels": [],
-          "title": "🚀 Original Metrics (Copied)",
-          "type": "row"
-        },
-        {
-          "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "fieldConfig": {
-            "defaults": {
-              "color": { "mode": "palette-classic" },
-              "custom": {
-                "axisLabel": "ms",
-                "drawStyle": "line",
-                "fillOpacity": 10,
-                "lineInterpolation": "smooth",
-                "lineWidth": 2
-              },
-              "mappings": [],
-              "unit": "ms"
-            }
-          },
-          "gridPos": { "h": 12, "w": 24, "x": 0, "y": 12 },
-          "id": 1,
-          "options": {
-            "legend": { "displayMode": "table", "placement": "bottom", "showLegend": true },
-            "tooltip": { "mode": "multi", "sort": "desc" }
-          },
-          "targets": [
-            {
-              "datasource": { "type": "prometheus", "uid": "prometheus" },
-              "expr": "histogram_quantile(0.95, rate(http_server_request_duration_seconds_bucket{job!~\"prometheus|kubernetes-services\"}[5m])) * 1000",
-              "legendFormat": "P95 | {{job}}",
-              "refId": "A"
-            }
-          ],
-          "title": "Response Time Comparison (P95)",
-          "type": "timeseries"
-        },
-        {
-          "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "fieldConfig": {
-            "defaults": {
-              "color": { "mode": "palette-classic" },
-              "custom": {
-                "axisLabel": "reqps",
-                "drawStyle": "line",
-                "fillOpacity": 20,
-                "lineInterpolation": "smooth",
-                "lineWidth": 2
-              },
-              "mappings": [],
-              "unit": "reqps"
-            }
-          },
-          "gridPos": { "h": 12, "w": 24, "x": 0, "y": 24 },
-          "id": 2,
-          "options": {
-            "legend": { "displayMode": "table", "placement": "bottom", "showLegend": true },
-            "tooltip": { "mode": "multi", "sort": "desc" }
-          },
-          "targets": [
-            {
-              "datasource": { "type": "prometheus", "uid": "prometheus" },
-              "expr": "rate(http_server_request_duration_seconds_count{job!~\"prometheus|kubernetes-services\"}[5m])",
-              "legendFormat": "RPS | {{job}}",
-              "refId": "A"
-            }
-          ],
-          "title": "Throughput Comparison (RPS)",
-          "type": "timeseries"
+          "panelId": 1,
+          "refId": "A"
         }
       ],
-      "schemaVersion": 37,
-      "style": "dark",
-      "tags": ["eShop", "API", "compare", "replicas"],
-      "templating": { "list": [] },
-      "time": { "from": "now-1h", "to": "now" },
-      "timepicker": {},
-      "timezone": "browser",
-      "title": "eShop Performance Compare Dashboard 2 - Replica Split",
-      "uid": "eshop-compare-performance-v2",
-      "version": 1
+      "title": "Read - Response Time [ms]",
+      "transformations": [
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "byVariable": false,
+            "include": {
+              "pattern": ".*Response.*|^Time$"
+            }
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 22
+      },
+      "id": 9,
+      "panels": [],
+      "title": "Write",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Dashboard --"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 4,
+        "x": 4,
+        "y": 23
+      },
+      "id": 10,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.4.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Dashboard --"
+          },
+          "panelId": 7,
+          "refId": "A"
+        }
+      ],
+      "title": "Write- VU",
+      "transformations": [
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "byVariable": false,
+            "include": {
+              "pattern": ".*VU.*|^Time$"
+            }
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Dashboard --"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 9,
+        "x": 8,
+        "y": 23
+      },
+      "id": 11,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "12.4.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Dashboard --"
+          },
+          "panelId": 7,
+          "refId": "A"
+        }
+      ],
+      "title": "Write - RPS [Req/s]",
+      "transformations": [
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "byVariable": false,
+            "include": {
+              "pattern": ".*Requests.*|^Time$"
+            }
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Dashboard --"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 4,
+        "x": 20,
+        "y": 23
+      },
+      "id": 13,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "median"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Dashboard --"
+          },
+          "panelId": 7,
+          "refId": "A"
+        }
+      ],
+      "title": "Write - RPS",
+      "transformations": [
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "byVariable": false,
+            "include": {
+              "pattern": ".*Requests.*|^Time$"
+            }
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Dashboard --"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 9,
+        "x": 8,
+        "y": 34
+      },
+      "id": 12,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.4.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Dashboard --"
+          },
+          "panelId": 7,
+          "refId": "A"
+        }
+      ],
+      "title": "Write - Response Time [ms]",
+      "transformations": [
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "byVariable": false,
+            "include": {
+              "pattern": ".*Response.*|^Time$"
+            }
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 44
+      },
+      "id": 2,
+      "panels": [],
+      "title": "Ref data",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "${DS_YESOREYERAM-INFINITY-DATASOURCE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Response Time"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-purple",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 18,
+        "w": 10,
+        "x": 0,
+        "y": 45
+      },
+      "id": 1,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.4.2",
+      "targets": [
+        {
+          "columns": [
+            {
+              "selector": "Time",
+              "text": "Time",
+              "timestampFormat": "",
+              "type": "timestamp"
+            },
+            {
+              "selector": "requests",
+              "text": "Requests",
+              "type": "number"
+            },
+            {
+              "selector": "K6 VUs",
+              "text": "VU",
+              "type": "number"
+            },
+            {
+              "selector": "response",
+              "text": "Response Time",
+              "type": "number"
+            }
+          ],
+          "csv_options": {
+            "delimiter": ",",
+            "skip_empty_lines": false
+          },
+          "data": "Time,requests,K6 VUs,response\r\n2025-01-01 00:00:00,235,12,67.5\r\n2025-01-01 00:00:15,619,24,74.9\r\n2025-01-01 00:00:30,1037,36,78.9\r\n2025-01-01 00:00:45,1440,49,83.4\r\n2025-01-01 00:01:00,1631,50,84.8\r\n2025-01-01 00:01:15,1655,50,85.6\r\n2025-01-01 00:01:30,1678,50,86.6\r\n2025-01-01 00:01:45,1677,50,87.0\r\n2025-01-01 00:02:00,1695,61,87.9\r\n2025-01-01 00:02:15,1727,74,89.2\r\n2025-01-01 00:02:30,1801,86,90.3\r\n2025-01-01 00:02:45,1837,99,91.8\r\n2025-01-01 00:03:00,1581,100,93.8\r\n2025-01-01 00:03:15,1257,100,96.7\r\n2025-01-01 00:03:30,931,100,99.2\r\n2025-01-01 00:03:45,664,100,101\r\n2025-01-01 00:04:00,701,123,104\r\n2025-01-01 00:04:15,710,148,112\r\n2025-01-01 00:04:30,717,173,171\r\n2025-01-01 00:04:45,711,198,264\r\n2025-01-01 00:05:00,702,200,301\r\n2025-01-01 00:05:15,704,200,367\r\n2025-01-01 00:05:30,712,200,395\r\n2025-01-01 00:05:45,729,200,399\r\n2025-01-01 00:06:00,728,246,404\r\n2025-01-01 00:06:15,716,296,467\r\n2025-01-01 00:06:30,698,346,498\r\n2025-01-01 00:06:45,677,396,530\r\n2025-01-01 00:07:00,675,400,592\r\n2025-01-01 00:07:15,689,400,599\r\n2025-01-01 00:07:30,707,400,605\r\n2025-01-01 00:07:45,727,400,631\r\n2025-01-01 00:08:00,710,446,672\r\n2025-01-01 00:08:15,694,496,697\r\n2025-01-01 00:08:30,704,546,704\r\n2025-01-01 00:08:45,704,596,760\r\n2025-01-01 00:09:00,716,600,797\r\n2025-01-01 00:09:15,722,600,806\r\n2025-01-01 00:09:30,712,600,872\r\n2025-01-01 00:09:45,706,600,898\r\n2025-01-01 00:10:00,715,329,899\r\n",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "${DS_YESOREYERAM-INFINITY-DATASOURCE}"
+          },
+          "filters": [],
+          "format": "table",
+          "global_query_id": "",
+          "parser": "backend",
+          "refId": "0-Baseline",
+          "root_selector": "",
+          "source": "inline",
+          "type": "csv",
+          "url": "https://github.com/IggyCloud/resources/blob/main/evidence/0-baseline/read/data/read-1st-normalized.csv",
+          "url_options": {
+            "data": "",
+            "method": "GET"
+          }
+        },
+        {
+          "columns": [
+            {
+              "selector": "Time",
+              "text": "Time",
+              "timestampFormat": "",
+              "type": "timestamp"
+            },
+            {
+              "selector": "requests",
+              "text": "Requests",
+              "type": "number"
+            },
+            {
+              "selector": "K6 VUs",
+              "text": "VU",
+              "type": "number"
+            },
+            {
+              "selector": "response",
+              "text": "Response Time",
+              "type": "number"
+            }
+          ],
+          "csv_options": {
+            "delimiter": ",",
+            "skip_empty_lines": false
+          },
+          "data": "Time,requests,K6 VUs,response\r\n2025-01-01 00:00:00,435,12,16.6\r\n2025-01-01 00:00:15,890,24,26.5\r\n2025-01-01 00:00:30,1352,36,38.1\r\n2025-01-01 00:00:45,1804,49,43.6\r\n2025-01-01 00:01:00,1852,50,47.3\r\n2025-01-01 00:01:15,1872,50,50.1\r\n2025-01-01 00:01:30,1920,50,54.1\r\n2025-01-01 00:01:45,1961,50,57.9\r\n2025-01-01 00:02:00,1964,62,61.7\r\n2025-01-01 00:02:15,1960,74,64.2\r\n2025-01-01 00:02:30,1931,86,66.5\r\n2025-01-01 00:02:45,1829,99,71.1\r\n2025-01-01 00:03:00,1498,100,74.8\r\n2025-01-01 00:03:15,1170,100,78.4\r\n2025-01-01 00:03:30,817,100,82.9\r\n2025-01-01 00:03:45,654,100,92.3\r\n2025-01-01 00:04:00,636,123,97.2\r\n2025-01-01 00:04:15,663,148,102\r\n2025-01-01 00:04:30,693,173,197\r\n2025-01-01 00:04:45,750,198,252\r\n2025-01-01 00:05:00,793,200,298\r\n2025-01-01 00:05:15,781,200,306\r\n2025-01-01 00:05:30,774,200,350\r\n2025-01-01 00:05:45,748,200,391\r\n2025-01-01 00:06:00,737,249,398\r\n2025-01-01 00:06:15,722,296,405\r\n2025-01-01 00:06:30,723,346,453\r\n2025-01-01 00:06:45,707,396,499\r\n2025-01-01 00:07:00,725,400,531\r\n2025-01-01 00:07:15,726,400,555\r\n2025-01-01 00:07:30,704,400,597\r\n2025-01-01 00:07:45,729,400,600\r\n2025-01-01 00:08:00,732,446,605\r\n2025-01-01 00:08:15,723,496,651\r\n2025-01-01 00:08:30,731,546,698\r\n2025-01-01 00:08:45,718,596,742\r\n2025-01-01 00:09:00,724,600,797\r\n2025-01-01 00:09:15,719,600,825\r\n2025-01-01 00:09:30,650,600,895\r\n2025-01-01 00:09:45,570,600,904\r\n2025-01-01 00:10:00,549,326,947\r\n",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "${DS_YESOREYERAM-INFINITY-DATASOURCE}"
+          },
+          "filters": [],
+          "format": "table",
+          "global_query_id": "",
+          "parser": "backend",
+          "refId": "1-DbContextPool",
+          "root_selector": "",
+          "source": "inline",
+          "type": "csv",
+          "url": "https://github.com/IggyCloud/resources/blob/main/evidence/0-baseline/read/data/read-1st-normalized.csv",
+          "url_options": {
+            "data": "",
+            "method": "GET"
+          }
+        },
+        {
+          "columns": [
+            {
+              "selector": "Time",
+              "text": "Time",
+              "timestampFormat": "",
+              "type": "timestamp"
+            },
+            {
+              "selector": "requests",
+              "text": "Requests",
+              "type": "number"
+            },
+            {
+              "selector": "K6 VUs",
+              "text": "VU",
+              "type": "number"
+            },
+            {
+              "selector": "response",
+              "text": "Response Time",
+              "type": "number"
+            }
+          ],
+          "csv_options": {
+            "delimiter": ",",
+            "skip_empty_lines": false
+          },
+          "data": "Time,requests,K6 VUs,response\r\n2025-01-01 00:00:00,563,16,16.1\r\n2025-01-01 00:00:15,1053,28,35.6\r\n2025-01-01 00:00:30,1554,40,54.7\r\n2025-01-01 00:00:45,1960,50,61.3\r\n2025-01-01 00:01:00,2036,50,64.8\r\n2025-01-01 00:01:15,2083,50,67.6\r\n2025-01-01 00:01:30,2104,50,68.6\r\n2025-01-01 00:01:45,2085,53,68.7\r\n2025-01-01 00:02:00,2042,65,69.3\r\n2025-01-01 00:02:15,2005,78,70.5\r\n2025-01-01 00:02:30,2003,90,72.0\r\n2025-01-01 00:02:45,2000,100,74.0\r\n2025-01-01 00:03:00,2000,100,76.5\r\n2025-01-01 00:03:15,2014,100,79.0\r\n2025-01-01 00:03:30,2004,100,79.6\r\n2025-01-01 00:03:45,2019,106,80.4\r\n2025-01-01 00:04:00,2017,131,82.0\r\n2025-01-01 00:04:15,1998,158,85.4\r\n2025-01-01 00:04:30,1987,181,90.5\r\n2025-01-01 00:04:45,1949,200,98.2\r\n2025-01-01 00:05:00,1949,200,105\r\n2025-01-01 00:05:15,1947,200,112\r\n2025-01-01 00:05:30,1950,200,116\r\n2025-01-01 00:05:45,1967,213,120\r\n2025-01-01 00:06:00,1945,263,128\r\n2025-01-01 00:06:15,1916,313,143\r\n2025-01-01 00:06:30,1876,363,166\r\n2025-01-01 00:06:45,1864,400,185\r\n2025-01-01 00:07:00,1862,400,201\r\n2025-01-01 00:07:15,1869,400,213\r\n2025-01-01 00:07:30,1875,400,221\r\n2025-01-01 00:07:45,1884,413,227\r\n2025-01-01 00:08:00,1894,466,237\r\n2025-01-01 00:08:15,1927,513,249\r\n2025-01-01 00:08:30,1997,563,263\r\n2025-01-01 00:08:45,2091,600,278\r\n2025-01-01 00:09:00,2171,600,287\r\n2025-01-01 00:09:15,2239,600,293\r\n2025-01-01 00:09:30,2242,600,297\r\n2025-01-01 00:09:45,2230,526,299\r\n2025-01-01 00:10:00,2151,222,299",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "${DS_YESOREYERAM-INFINITY-DATASOURCE}"
+          },
+          "filters": [],
+          "format": "table",
+          "global_query_id": "",
+          "parser": "backend",
+          "refId": "2-MaxConnections",
+          "root_selector": "",
+          "source": "inline",
+          "type": "csv",
+          "url": "https://github.com/IggyCloud/resources/blob/main/evidence/0-baseline/read/data/read-1st-normalized.csv",
+          "url_options": {
+            "data": "",
+            "method": "GET"
+          }
+        },
+        {
+          "columns": [
+            {
+              "selector": "Time",
+              "text": "Time",
+              "timestampFormat": "",
+              "type": "timestamp"
+            },
+            {
+              "selector": "requests",
+              "text": "Requests",
+              "type": "number"
+            },
+            {
+              "selector": "K6 VUs",
+              "text": "VU",
+              "type": "number"
+            },
+            {
+              "selector": "response",
+              "text": "Response Time",
+              "type": "number"
+            }
+          ],
+          "csv_options": {
+            "delimiter": ",",
+            "skip_empty_lines": false
+          },
+          "data": "Time,requests,K6 VUs,response\r\n2025-01-01 00:00:00,499,12,3.43\r\n2025-01-01 00:00:15,1207,24,13.0\r\n2025-01-01 00:00:30,1951,33,19.9\r\n2025-01-01 00:00:45,2702,45,33.0\r\n2025-01-01 00:01:00,2918,50,43.3\r\n2025-01-01 00:01:15,3011,50,44.5\r\n2025-01-01 00:01:30,3076,50,45.8\r\n2025-01-01 00:01:45,3144,50,46.5\r\n2025-01-01 00:02:00,3164,61,47.5\r\n2025-01-01 00:02:15,3158,74,48.8\r\n2025-01-01 00:02:30,3158,86,49.6\r\n2025-01-01 00:02:45,3156,99,51.2\r\n2025-01-01 00:03:00,3167,100,52.6\r\n2025-01-01 00:03:15,3175,100,53.8\r\n2025-01-01 00:03:30,3195,100,54.8\r\n2025-01-01 00:03:45,3195,100,55.6\r\n2025-01-01 00:04:00,3177,123,56.6\r\n2025-01-01 00:04:15,3131,148,58.6\r\n2025-01-01 00:04:30,3056,173,60.8\r\n2025-01-01 00:04:45,3008,198,64.3\r\n2025-01-01 00:05:00,2981,200,70.2\r\n2025-01-01 00:05:15,2991,200,77.0\r\n2025-01-01 00:05:30,3024,200,82.4\r\n2025-01-01 00:05:45,3008,200,87.3\r\n2025-01-01 00:06:00,2999,246,91.2\r\n2025-01-01 00:06:15,2975,296,95.7\r\n2025-01-01 00:06:30,2982,346,99.5\r\n2025-01-01 00:06:45,3020,396,104\r\n2025-01-01 00:07:00,3094,400,109\r\n2025-01-01 00:07:15,3190,400,114\r\n2025-01-01 00:07:30,3260,400,118\r\n2025-01-01 00:07:45,3273,400,123\r\n2025-01-01 00:08:00,3284,446,135\r\n2025-01-01 00:08:15,3238,496,161\r\n2025-01-01 00:08:30,3214,546,175\r\n2025-01-01 00:08:45,3238,596,185\r\n2025-01-01 00:09:00,3227,600,192\r\n2025-01-01 00:09:15,3205,600,197\r\n2025-01-01 00:09:30,3202,600,199\r\n2025-01-01 00:09:45,3201,600,200\r\n2025-01-01 00:10:00,3241,646,202\r\n2025-01-01 00:10:15,3225,696,204\r\n2025-01-01 00:10:30,3230,746,207\r\n2025-01-01 00:10:45,3197,796,215\r\n2025-01-01 00:11:00,3192,800,224\r\n2025-01-01 00:11:15,3182,800,240\r\n2025-01-01 00:11:30,3188,800,265\r\n2025-01-01 00:11:45,3195,800,271\r\n2025-01-01 00:12:00,3186,846,275\r\n2025-01-01 00:12:15,3189,879,279\r\n2025-01-01 00:12:30,3174,946,287\r\n2025-01-01 00:12:45,3176,996,293\r\n2025-01-01 00:13:00,3174,1000,297\r\n2025-01-01 00:13:15,3200,1000,300\r\n2025-01-01 00:13:30,3233,1000,303\r\n2025-01-01 00:13:45,3294,1000,305\r\n2025-01-01 00:14:00,3296,541,306\r\n2025-01-01 00:14:15,3265,39,305\r\n",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "${DS_YESOREYERAM-INFINITY-DATASOURCE}"
+          },
+          "filters": [],
+          "format": "table",
+          "global_query_id": "",
+          "parser": "backend",
+          "refId": "3-EasyBatch",
+          "root_selector": "",
+          "source": "inline",
+          "type": "csv",
+          "url": "https://github.com/IggyCloud/resources/blob/main/evidence/0-baseline/read/data/read-1st-normalized.csv",
+          "url_options": {
+            "data": "",
+            "method": "GET"
+          }
+        },
+        {
+          "columns": [
+            {
+              "selector": "Time",
+              "text": "Time",
+              "timestampFormat": "",
+              "type": "timestamp"
+            },
+            {
+              "selector": "requests",
+              "text": "Requests",
+              "type": "number"
+            },
+            {
+              "selector": "K6 VUs",
+              "text": "VU",
+              "type": "number"
+            },
+            {
+              "selector": "response",
+              "text": "Response Time",
+              "type": "number"
+            }
+          ],
+          "csv_options": {
+            "delimiter": ",",
+            "skip_empty_lines": false
+          },
+          "data": "Time,requests,K6 VUs,response\r\n2025-01-01 00:00:00,,4,2.69\r\n2025-01-01 00:00:15,839,16,12.9\r\n2025-01-01 00:00:30,1416,28,33.7\r\n2025-01-01 00:00:45,2083,41,51.6\r\n2025-01-01 00:01:00,2563,50,55.0\r\n2025-01-01 00:01:15,2652,50,55.1\r\n2025-01-01 00:01:30,2754,50,55.1\r\n2025-01-01 00:01:45,2787,50,57.4\r\n2025-01-01 00:02:00,2785,54,58.7\r\n2025-01-01 00:02:15,2783,65,59.6\r\n2025-01-01 00:02:30,2811,78,62.5\r\n2025-01-01 00:02:45,2868,90,63.3\r\n2025-01-01 00:03:00,2918,100,65.1\r\n2025-01-01 00:03:15,2928,100,68.4\r\n2025-01-01 00:03:30,2838,100,73.6\r\n2025-01-01 00:03:45,2790,100,78.8\r\n2025-01-01 00:04:00,2773,106,83.0\r\n2025-01-01 00:04:15,2842,131,85.0\r\n2025-01-01 00:04:30,2981,156,87.2\r\n2025-01-01 00:04:45,3006,181,89.3\r\n2025-01-01 00:05:00,3045,200,91.4\r\n2025-01-01 00:05:15,3046,200,92.9\r\n2025-01-01 00:05:30,3040,200,94.1\r\n2025-01-01 00:05:45,3068,200,94.9\r\n2025-01-01 00:06:00,3027,212,95.7\r\n2025-01-01 00:06:15,2987,262,96.9\r\n2025-01-01 00:06:30,2916,316,99.6\r\n2025-01-01 00:06:45,2820,362,106\r\n2025-01-01 00:07:00,2689,400,119\r\n2025-01-01 00:07:15,2630,400,137\r\n2025-01-01 00:07:30,2660,400,156\r\n2025-01-01 00:07:45,2637,400,164\r\n2025-01-01 00:08:00,2700,412,168\r\n2025-01-01 00:08:15,2652,462,175\r\n2025-01-01 00:08:30,2610,512,182\r\n2025-01-01 00:08:45,2575,562,193\r\n2025-01-01 00:09:00,2554,600,201\r\n2025-01-01 00:09:15,2566,600,211\r\n2025-01-01 00:09:30,2570,600,219\r\n2025-01-01 00:09:45,2553,600,227\r\n2025-01-01 00:10:00,2478,612,241\r\n2025-01-01 00:10:15,2482,662,256\r\n2025-01-01 00:10:30,2434,712,270\r\n2025-01-01 00:10:45,2511,766,278\r\n2025-01-01 00:11:00,2663,800,284\r\n2025-01-01 00:11:15,2815,800,288\r\n2025-01-01 00:11:30,2909,800,290\r\n2025-01-01 00:11:45,2879,800,294\r\n2025-01-01 00:12:00,2820,812,297\r\n2025-01-01 00:12:15,2720,862,301\r\n2025-01-01 00:12:30,2690,912,307\r\n2025-01-01 00:12:45,2720,962,314\r\n2025-01-01 00:13:00,2736,1000,327\r\n2025-01-01 00:13:15,2710,1000,348\r\n2025-01-01 00:13:30,2681,1000,366\r\n2025-01-01 00:13:45,2672,1000,376\r\n2025-01-01 00:14:00,2647,1012,383\r\n2025-01-01 00:14:15,2721,1062,386\r\n2025-01-01 00:14:30,2847,1116,388\r\n2025-01-01 00:14:45,2932,1162,392\r\n2025-01-01 00:15:00,2973,1200,396\r\n2025-01-01 00:15:15,2906,1200,401\r\n2025-01-01 00:15:30,2806,1200,406\r\n2025-01-01 00:15:45,2743,1200,412\r\n2025-01-01 00:16:00,2694,1014,420\r\n2025-01-01 00:16:15,2673,450,420\r\n2025-01-01 00:16:30,2427,,\r\n2025-01-01 00:16:45,1757,,\r\n2025-01-01 00:17:00,1085,,\r\n2025-01-01 00:17:15,377,,\r\n",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "${DS_YESOREYERAM-INFINITY-DATASOURCE}"
+          },
+          "filters": [],
+          "format": "table",
+          "global_query_id": "",
+          "parser": "backend",
+          "refId": "4-Indexes",
+          "root_selector": "",
+          "source": "inline",
+          "type": "csv",
+          "url": "https://github.com/IggyCloud/resources/blob/main/evidence/0-baseline/read/data/read-1st-normalized.csv",
+          "url_options": {
+            "data": "",
+            "method": "GET"
+          }
+        },
+        {
+          "columns": [
+            {
+              "selector": "Time",
+              "text": "Time",
+              "timestampFormat": "",
+              "type": "timestamp"
+            },
+            {
+              "selector": "requests",
+              "text": "Requests",
+              "type": "number"
+            },
+            {
+              "selector": "K6 VUs",
+              "text": "VU",
+              "type": "number"
+            },
+            {
+              "selector": "response",
+              "text": "Response Time",
+              "type": "number"
+            }
+          ],
+          "csv_options": {
+            "delimiter": ",",
+            "skip_empty_lines": false
+          },
+          "data": "Time,requests,K6 VUs,response\r\n2025-01-01 00:00:00,0,4,1.66\r\n2025-01-01 00:00:15,833,16,5.70\r\n2025-01-01 00:00:30,1613,28,12.3\r\n2025-01-01 00:00:45,2445,40,20.1\r\n2025-01-01 00:01:00,3140,50,33.3\r\n2025-01-01 00:01:15,3276,50,52.7\r\n2025-01-01 00:01:30,3342,50,54.1\r\n2025-01-01 00:01:45,3343,50,56.8\r\n2025-01-01 00:02:00,3329,53,57.7\r\n2025-01-01 00:02:15,3338,65,57.8\r\n2025-01-01 00:02:30,3288,78,58.3\r\n2025-01-01 00:02:45,3281,90,59.6\r\n2025-01-01 00:03:00,3249,100,60.1\r\n2025-01-01 00:03:15,3234,100,61.3\r\n2025-01-01 00:03:30,3245,100,62.4\r\n2025-01-01 00:03:45,3271,100,63.4\r\n2025-01-01 00:04:00,3268,106,64.2\r\n2025-01-01 00:04:15,3281,131,64.4\r\n2025-01-01 00:04:30,3265,156,64.6\r\n2025-01-01 00:04:45,3248,181,66.8\r\n2025-01-01 00:05:00,3210,200,70.9\r\n2025-01-01 00:05:15,3183,200,75.0\r\n2025-01-01 00:05:30,3146,200,77.9\r\n2025-01-01 00:05:45,3144,200,80.1\r\n2025-01-01 00:06:00,3128,212,82.1\r\n2025-01-01 00:06:15,3095,262,85.8\r\n2025-01-01 00:06:30,3042,312,92.8\r\n2025-01-01 00:06:45,3014,362,101\r\n2025-01-01 00:07:00,2999,400,112\r\n2025-01-01 00:07:15,3029,400,123\r\n2025-01-01 00:07:30,3025,400,133\r\n2025-01-01 00:07:45,3030,400,140\r\n2025-01-01 00:08:00,3034,412,146\r\n2025-01-01 00:08:15,3040,462,152\r\n2025-01-01 00:08:30,3041,512,162\r\n2025-01-01 00:08:45,3119,562,171\r\n2025-01-01 00:09:00,3245,600,178\r\n2025-01-01 00:09:15,3406,600,184\r\n2025-01-01 00:09:30,3529,600,188\r\n2025-01-01 00:09:45,3662,600,190\r\n2025-01-01 00:10:00,3683,612,192\r\n2025-01-01 00:10:15,3674,662,195\r\n2025-01-01 00:10:30,3701,712,199\r\n2025-01-01 00:10:45,3690,762,204\r\n2025-01-01 00:11:00,3714,800,208\r\n2025-01-01 00:11:15,3722,800,214\r\n2025-01-01 00:11:30,3705,800,218\r\n2025-01-01 00:11:45,3717,800,222\r\n2025-01-01 00:12:00,3706,812,226\r\n2025-01-01 00:12:15,3701,865,231\r\n2025-01-01 00:12:30,3689,912,237\r\n2025-01-01 00:12:45,3672,962,246\r\n2025-01-01 00:13:00,3667,1000,255\r\n2025-01-01 00:13:15,3678,1000,263\r\n2025-01-01 00:13:30,3677,1000,270\r\n2025-01-01 00:13:45,3692,1000,275\r\n2025-01-01 00:14:00,3665,1012,280\r\n2025-01-01 00:14:15,3661,1062,285\r\n2025-01-01 00:14:30,3589,1112,292\r\n2025-01-01 00:14:45,3546,1162,300\r\n2025-01-01 00:15:00,3518,1200,309\r\n2025-01-01 00:15:15,3527,1200,317\r\n2025-01-01 00:15:30,3568,1200,325\r\n2025-01-01 00:15:45,3545,1200,333\r\n2025-01-01 00:16:00,3431,1056,341\r\n2025-01-01 00:16:15,3374,452,341\r\n",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "${DS_YESOREYERAM-INFINITY-DATASOURCE}"
+          },
+          "filters": [],
+          "format": "table",
+          "global_query_id": "",
+          "parser": "backend",
+          "refId": "5-readreplicas",
+          "root_selector": "",
+          "source": "inline",
+          "type": "csv",
+          "url": "https://github.com/IggyCloud/resources/blob/main/evidence/0-baseline/read/data/read-1st-normalized.csv",
+          "url_options": {
+            "data": "",
+            "method": "GET"
+          }
+        }
+      ],
+      "title": "Read Data",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "${DS_YESOREYERAM-INFINITY-DATASOURCE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Response Time"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-purple",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 18,
+        "w": 12,
+        "x": 12,
+        "y": 45
+      },
+      "id": 7,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.4.2",
+      "targets": [
+        {
+          "columns": [
+            {
+              "selector": "Time",
+              "text": "Time",
+              "timestampFormat": "",
+              "type": "timestamp"
+            },
+            {
+              "selector": "POST_requests",
+              "text": "Requests",
+              "type": "number"
+            },
+            {
+              "selector": "K6 VUs",
+              "text": "VU",
+              "type": "number"
+            },
+            {
+              "selector": "POST_response",
+              "text": "Response Time",
+              "type": "number"
+            }
+          ],
+          "csv_options": {
+            "delimiter": ",",
+            "skip_empty_lines": false
+          },
+          "data": "Time,POST_requests,K6 VUs,GET_brands_response,GET_types_response,POST_response\n2025-01-01 00:00:00,190,9,10.7,72.8,11.8\n2025-01-01 00:00:15,613,20,10.7,72.8,23.6\n2025-01-01 00:00:30,1321,32,10.7,72.8,25.8\n2025-01-01 00:00:45,2053,44,10.7,72.8,31.1\n2025-01-01 00:01:00,2647,50,10.7,72.8,38.8\n2025-01-01 00:01:15,2832,50,10.7,72.8,41.5\n2025-01-01 00:01:30,2810,50,10.7,72.8,42.2\n2025-01-01 00:01:45,2815,50,10.7,72.8,41.9\n2025-01-01 00:02:00,2810,57,10.7,72.8,42.2\n2025-01-01 00:02:15,2819,69,10.7,72.8,42.9\n2025-01-01 00:02:30,2811,82,10.7,72.8,43.9\n2025-01-01 00:02:45,2753,94,10.7,72.8,45.2\n2025-01-01 00:03:00,2139,100,10.7,72.8,46.8\n2025-01-01 00:03:15,1506,100,10.7,72.8,48.6\n2025-01-01 00:03:30,885,100,10.7,72.8,52.0\n2025-01-01 00:03:45,499,100,10.7,72.8,78.8\n2025-01-01 00:04:00,516,114,10.7,72.8,99.1\n2025-01-01 00:04:15,518,139,10.7,72.8,107\n2025-01-01 00:04:30,495,164,10.7,72.8,198\n2025-01-01 00:04:45,495,189,10.7,72.8,249\n2025-01-01 00:05:00,489,200,,,299\n2025-01-01 00:05:15,494,200,,,332\n2025-01-01 00:05:30,509,200,,,353\n2025-01-01 00:05:45,506,200,,,396\n2025-01-01 00:06:00,505,232,,,400\n2025-01-01 00:06:15,483,279,,,416\n2025-01-01 00:06:30,464,329,,,481\n2025-01-01 00:06:45,464,382,,,501\n2025-01-01 00:07:00,466,400,,,552\n2025-01-01 00:07:15,476,400,,,600\n2025-01-01 00:07:30,490,400,,,650\n2025-01-01 00:07:45,480,400,,,698\n2025-01-01 00:08:00,490,429,,,721\n2025-01-01 00:08:15,494,479,,,794\n2025-01-01 00:08:30,487,529,,,806\n2025-01-01 00:08:45,494,579,,,896\n2025-01-01 00:09:00,488,600,,,944\n2025-01-01 00:09:15,476,600,,,999\n2025-01-01 00:09:30,470,600,,,1050\n2025-01-01 00:09:45,478,600,,,1099\n2025-01-01 00:10:00,471,437,,,1105\n2025-01-01 00:10:15,493,128,,,1104\n",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "${DS_YESOREYERAM-INFINITY-DATASOURCE}"
+          },
+          "filters": [],
+          "format": "table",
+          "global_query_id": "",
+          "parser": "backend",
+          "refId": "0-Baseline",
+          "root_selector": "",
+          "source": "inline",
+          "type": "csv",
+          "url": "https://github.com/IggyCloud/resources/blob/main/evidence/0-baseline/read/data/read-1st-normalized.csv",
+          "url_options": {
+            "data": "",
+            "method": "GET"
+          }
+        },
+        {
+          "columns": [
+            {
+              "selector": "Time",
+              "text": "Time",
+              "timestampFormat": "",
+              "type": "timestamp"
+            },
+            {
+              "selector": "POST_requests",
+              "text": "Requests",
+              "type": "number"
+            },
+            {
+              "selector": "K6 VUs",
+              "text": "VU",
+              "type": "number"
+            },
+            {
+              "selector": "POST_response",
+              "text": "Response Time",
+              "type": "number"
+            }
+          ],
+          "csv_options": {
+            "delimiter": ",",
+            "skip_empty_lines": false
+          },
+          "data": "Time,POST_requests,K6 VUs,GET_brands_response,GET_types_response,POST_response\n2025-01-01 00:00:00,351,12,4.54,52.1,25.1\n2025-01-01 00:00:15,850,24,4.54,52.1,43.2\n2025-01-01 00:00:30,1397,36,4.54,52.1,69.5\n2025-01-01 00:00:45,1998,49,4.54,52.1,72.9\n2025-01-01 00:01:00,2261,50,4.54,52.1,76.7\n2025-01-01 00:01:15,2407,50,4.54,52.1,78.0\n2025-01-01 00:01:30,2504,50,4.54,52.1,77.2\n2025-01-01 00:01:45,2588,50,4.54,52.1,75.8\n2025-01-01 00:02:00,2638,61,4.54,52.1,75.2\n2025-01-01 00:02:15,2670,74,4.54,52.1,78.0\n2025-01-01 00:02:30,2698,86,4.54,52.1,80.5\n2025-01-01 00:02:45,2500,99,4.54,52.1,83.2\n2025-01-01 00:03:00,1890,100,4.54,52.1,85.2\n2025-01-01 00:03:15,1268,100,4.54,52.1,87.6\n2025-01-01 00:03:30,635,100,4.54,52.1,92.0\n2025-01-01 00:03:45,435,100,4.54,52.1,98.9\n2025-01-01 00:04:00,420,123,4.54,52.1,108\n2025-01-01 00:04:15,426,148,4.54,52.1,195\n2025-01-01 00:04:30,445,173,4.54,52.1,247\n2025-01-01 00:04:45,470,198,,,297\n2025-01-01 00:05:00,481,200,,,333\n2025-01-01 00:05:15,488,200,,,379\n2025-01-01 00:05:30,483,200,,,398\n2025-01-01 00:05:45,484,200,,,401\n2025-01-01 00:06:00,490,246,,,434\n2025-01-01 00:06:15,472,296,,,477\n2025-01-01 00:06:30,462,346,,,500\n2025-01-01 00:06:45,459,396,,,548\n2025-01-01 00:07:00,456,400,,,598\n2025-01-01 00:07:15,465,400,,,646\n2025-01-01 00:07:30,470,400,,,698\n2025-01-01 00:07:45,468,400,,,727\n2025-01-01 00:08:00,477,446,,,795\n2025-01-01 00:08:15,472,496,,,844\n2025-01-01 00:08:30,473,546,,,899\n2025-01-01 00:08:45,461,596,,,951\n2025-01-01 00:09:00,458,600,,,1000\n2025-01-01 00:09:15,468,600,,,1052\n2025-01-01 00:09:30,465,600,,,1103\n2025-01-01 00:09:45,463,600,,,1155\n2025-01-01 00:10:00,457,334,,,1197+-\n",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "${DS_YESOREYERAM-INFINITY-DATASOURCE}"
+          },
+          "filters": [],
+          "format": "table",
+          "global_query_id": "",
+          "parser": "backend",
+          "refId": "1-DbContextPool",
+          "root_selector": "",
+          "source": "inline",
+          "type": "csv",
+          "url": "https://github.com/IggyCloud/resources/blob/main/evidence/0-baseline/read/data/read-1st-normalized.csv",
+          "url_options": {
+            "data": "",
+            "method": "GET"
+          }
+        },
+        {
+          "columns": [
+            {
+              "selector": "Time",
+              "text": "Time",
+              "timestampFormat": "",
+              "type": "timestamp"
+            },
+            {
+              "selector": "POST_requests",
+              "text": "Requests",
+              "type": "number"
+            },
+            {
+              "selector": "K6 VUs",
+              "text": "VU",
+              "type": "number"
+            },
+            {
+              "selector": "POST_response",
+              "text": "Response Time",
+              "type": "number"
+            }
+          ],
+          "csv_options": {
+            "delimiter": ",",
+            "skip_empty_lines": false
+          },
+          "data": "Time,POST_requests,K6 VUs,GET_brands_response,GET_types_response,POST_response\n2025-01-01 00:00:00,109,8,13.6,58.0,13.7\n2025-01-01 00:00:15,378,20,13.6,58.0,72.6\n2025-01-01 00:00:30,892,32,13.6,58.0,72.7\n2025-01-01 00:00:45,1544,45,13.6,58.0,73.0\n2025-01-01 00:01:00,2228,50,13.6,58.0,75.9\n2025-01-01 00:01:15,2661,50,13.6,58.0,75.9\n2025-01-01 00:01:30,2817,50,13.6,58.0,75.9\n2025-01-01 00:01:45,2855,50,13.6,58.0,76.0\n2025-01-01 00:02:00,2869,57,13.6,58.0,76.0\n2025-01-01 00:02:15,2878,69,13.6,58.0,76.9\n2025-01-01 00:02:30,2856,82,13.6,58.0,79.6\n2025-01-01 00:02:45,2841,94,13.6,58.0,83.2\n2025-01-01 00:03:00,2795,100,13.6,58.0,85.9\n2025-01-01 00:03:15,2791,100,13.6,58.0,87.0\n2025-01-01 00:03:30,2794,100,13.6,58.0,87.7\n2025-01-01 00:03:45,2819,100,13.6,58.0,88.4\n2025-01-01 00:04:00,2802,114,13.6,58.0,89.0\n2025-01-01 00:04:15,2731,131,13.6,58.0,90.0\n2025-01-01 00:04:30,2658,164,13.6,58.0,91.0\n2025-01-01 00:04:45,2546,189,13.6,58.0,93.2\n2025-01-01 00:05:00,2459,200,,,96.2\n2025-01-01 00:05:15,2422,200,,,98.0\n2025-01-01 00:05:30,2429,200,,,98.9\n2025-01-01 00:05:45,2486,200,,,100\n2025-01-01 00:06:00,2477,229,,,101\n2025-01-01 00:06:15,2403,279,,,103\n2025-01-01 00:06:30,2314,329,,,111\n2025-01-01 00:06:45,2162,379,,,126\n2025-01-01 00:07:00,2076,400,,,178\n2025-01-01 00:07:15,2072,400,,,196\n2025-01-01 00:07:30,2068,400,,,200\n2025-01-01 00:07:45,2084,400,,,203\n2025-01-01 00:08:00,2113,429,,,208\n2025-01-01 00:08:15,2117,479,,,221\n2025-01-01 00:08:30,2124,529,,,242\n2025-01-01 00:08:45,2131,579,,,272\n2025-01-01 00:09:00,2121,600,,,293\n2025-01-01 00:09:15,2121,600,,,297\n2025-01-01 00:09:30,2097,600,,,301\n2025-01-01 00:09:45,2106,600,,,304\n2025-01-01 00:10:00,2119,424,,,306\n2025-01-01 00:10:15,2174,124,,,305\n2025-01-01 00:10:30,1937,,,,\n2025-01-01 00:10:45,1299,,,,\n2025-01-01 00:11:00,738,,,,\n2025-01-01 00:11:15,5.60,,,,\n",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "${DS_YESOREYERAM-INFINITY-DATASOURCE}"
+          },
+          "filters": [],
+          "format": "table",
+          "global_query_id": "",
+          "parser": "backend",
+          "refId": "2-MaxConnections",
+          "root_selector": "",
+          "source": "inline",
+          "type": "csv",
+          "url": "https://github.com/IggyCloud/resources/blob/main/evidence/0-baseline/read/data/read-1st-normalized.csv",
+          "url_options": {
+            "data": "",
+            "method": "GET"
+          }
+        },
+        {
+          "columns": [
+            {
+              "selector": "Time",
+              "text": "Time",
+              "timestampFormat": "",
+              "type": "timestamp"
+            },
+            {
+              "selector": "POST_requests",
+              "text": "Requests",
+              "type": "number"
+            },
+            {
+              "selector": "K6 VUs",
+              "text": "VU",
+              "type": "number"
+            },
+            {
+              "selector": "POST_response",
+              "text": "Response Time",
+              "type": "number"
+            }
+          ],
+          "csv_options": {
+            "delimiter": ",",
+            "skip_empty_lines": false
+          },
+          "data": "Time,POST_requests,K6 VUs,GET_brands_response,GET_types_response,POST_response\n2025-01-01 00:00:00,,4,22.2,8.88,\n2025-01-01 00:00:15,714,16,22.2,8.88,5.67\n2025-01-01 00:00:30,1367,28,22.2,8.88,12.2\n2025-01-01 00:00:45,1996,40,22.2,8.88,65.7\n2025-01-01 00:01:00,2582,50,22.2,8.88,77.3\n2025-01-01 00:01:15,2582,50,22.2,8.88,81.0\n2025-01-01 00:01:30,2602,50,22.2,8.88,82.1\n2025-01-01 00:01:45,2622,50,22.2,8.88,82.7\n2025-01-01 00:02:00,2627,53,22.2,8.88,82.8\n2025-01-01 00:02:15,2628,65,22.2,8.88,83.2\n2025-01-01 00:02:30,2622,78,22.2,8.88,84.0\n2025-01-01 00:02:45,2582,90,22.2,8.88,85.4\n2025-01-01 00:03:00,2550,100,22.2,8.88,87.3\n2025-01-01 00:03:15,2545,100,22.2,8.88,88.8\n2025-01-01 00:03:30,2542,100,22.2,8.88,89.8\n2025-01-01 00:03:45,2586,100,22.2,8.88,90.5\n2025-01-01 00:04:00,2609,106,22.2,8.88,90.9\n2025-01-01 00:04:15,2595,131,22.2,8.88,91.5\n2025-01-01 00:04:30,2535,156,22.2,8.88,92.6\n2025-01-01 00:04:45,2418,181,22.2,8.88,94.2\n2025-01-01 00:05:00,2283,200,,,96.2\n2025-01-01 00:05:15,2183,200,,,98.4\n2025-01-01 00:05:30,2134,200,,,100\n2025-01-01 00:05:45,2124,200,,,102\n2025-01-01 00:06:00,2150,212,,,103\n2025-01-01 00:06:15,2144,262,,,105\n2025-01-01 00:06:30,2072,312,,,112\n2025-01-01 00:06:45,1978,362,,,189\n2025-01-01 00:07:00,1879,400,,,195\n2025-01-01 00:07:15,1822,400,,,199\n2025-01-01 00:07:30,1825,400,,,202\n2025-01-01 00:07:45,1831,400,,,207\n2025-01-01 00:08:00,1840,412,,,221\n2025-01-01 00:08:15,1844,462,,,289\n2025-01-01 00:08:30,1855,512,,,294\n2025-01-01 00:08:45,1879,562,,,298\n2025-01-01 00:09:00,1895,600,,,301\n2025-01-01 00:09:15,1909,600,,,305\n2025-01-01 00:09:30,1919,600,,,311\n2025-01-01 00:09:45,1912,600,,,370\n2025-01-01 00:10:00,1927,612,,,389\n2025-01-01 00:10:15,1932,662,,,393\n2025-01-01 00:10:30,1949,712,,,395\n2025-01-01 00:10:45,1960,762,,,398\n2025-01-01 00:11:00,1969,800,,,400\n2025-01-01 00:11:15,1963,800,,,402\n2025-01-01 00:11:30,1974,800,,,403\n2025-01-01 00:11:45,1976,800,,,405\n2025-01-01 00:12:00,1981,812,,,408\n2025-01-01 00:12:15,1978,862,,,414\n2025-01-01 00:12:30,1978,912,,,475\n2025-01-01 00:12:45,1981,962,,,492\n2025-01-01 00:13:00,1973,1000,,,496\n2025-01-01 00:13:15,1971,1000,,,499\n2025-01-01 00:13:30,1994,1000,,,500\n2025-01-01 00:13:45,1996,1000,,,502\n2025-01-01 00:14:00,2008,878,,,504\n2025-01-01 00:14:15,2012,374,,,504\n2025-01-01 00:14:30,2053,,,,\n2025-01-01 00:14:45,1487,,,,\n2025-01-01 00:15:00,978,,,,\n2025-01-01 00:15:15,458,,,,",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "${DS_YESOREYERAM-INFINITY-DATASOURCE}"
+          },
+          "filters": [],
+          "format": "table",
+          "global_query_id": "",
+          "parser": "backend",
+          "refId": "3-EasyBatch",
+          "root_selector": "",
+          "source": "inline",
+          "type": "csv",
+          "url": "https://github.com/IggyCloud/resources/blob/main/evidence/0-baseline/read/data/read-1st-normalized.csv",
+          "url_options": {
+            "data": "",
+            "method": "GET"
+          }
+        },
+        {
+          "columns": [
+            {
+              "selector": "Time",
+              "text": "Time",
+              "timestampFormat": "",
+              "type": "timestamp"
+            },
+            {
+              "selector": "POST_requests",
+              "text": "Requests",
+              "type": "number"
+            },
+            {
+              "selector": "K6 VUs",
+              "text": "VU",
+              "type": "number"
+            },
+            {
+              "selector": "POST_response",
+              "text": "Response Time",
+              "type": "number"
+            }
+          ],
+          "csv_options": {
+            "delimiter": ",",
+            "skip_empty_lines": false
+          },
+          "data": "Time,POST_requests,K6 VUs,GET_brands_response,GET_types_response,POST_response\n2025-01-01 00:00:00,216,8,13.0,140,10.7\n2025-01-01 00:00:15,568,20,13.0,140,49.2\n2025-01-01 00:00:30,998,32,13.0,140,75.3\n2025-01-01 00:00:45,1439,44,13.0,140,80.9\n2025-01-01 00:01:00,1705,50,13.0,140,82.1\n2025-01-01 00:01:15,1860,50,13.0,140,84.2\n2025-01-01 00:01:30,1891,50,13.0,140,85.5\n2025-01-01 00:01:45,2067,50,13.0,140,85.3\n2025-01-01 00:02:00,2164,57,13.0,140,85.3\n2025-01-01 00:02:15,2257,69,13.0,140,85.1\n2025-01-01 00:02:30,2324,82,13.0,140,84.9\n2025-01-01 00:02:45,2293,94,13.0,140,84.9\n2025-01-01 00:03:00,2250,100,13.0,140,85.3\n2025-01-01 00:03:15,2242,100,13.0,140,85.5\n2025-01-01 00:03:30,2252,100,13.0,140,85.7\n2025-01-01 00:03:45,2272,100,13.0,140,86.0\n2025-01-01 00:04:00,2263,114,13.0,140,86.5\n2025-01-01 00:04:15,2294,139,13.0,140,87.8\n2025-01-01 00:04:30,2297,164,13.0,140,92.5\n2025-01-01 00:04:45,2317,189,13.0,140,95.5\n2025-01-01 00:05:00,2341,200,,,97.3\n2025-01-01 00:05:15,2340,200,,,98.4\n2025-01-01 00:05:30,2359,200,,,99.3\n2025-01-01 00:05:45,2336,200,,,99.9\n2025-01-01 00:06:00,2293,228,,,101\n2025-01-01 00:06:15,2297,278,,,102\n2025-01-01 00:06:30,2280,328,,,108\n2025-01-01 00:06:45,2286,378,,,123\n2025-01-01 00:07:00,2294,400,,,185\n2025-01-01 00:07:15,2273,400,,,191\n2025-01-01 00:07:30,2236,400,,,195\n2025-01-01 00:07:45,2239,400,,,196\n2025-01-01 00:08:00,2237,428,,,198\n2025-01-01 00:08:15,2225,478,,,200\n2025-01-01 00:08:30,2252,528,,,202\n2025-01-01 00:08:45,2271,578,,,207\n2025-01-01 00:09:00,2295,600,,,218\n2025-01-01 00:09:15,2352,600,,,268\n2025-01-01 00:09:30,2349,600,,,283\n2025-01-01 00:09:45,2354,600,,,286\n2025-01-01 00:10:00,2356,628,,,288\n2025-01-01 00:10:15,2378,678,,,291\n2025-01-01 00:10:30,2391,728,,,294\n2025-01-01 00:10:45,2399,782,,,298\n2025-01-01 00:11:00,2407,800,,,301\n2025-01-01 00:11:15,2430,800,,,304\n2025-01-01 00:11:30,2416,800,,,313\n2025-01-01 00:11:45,2367,800,,,319\n2025-01-01 00:12:00,2345,828,,,339\n2025-01-01 00:12:15,2280,878,,,379\n2025-01-01 00:12:30,2250,928,,,386\n2025-01-01 00:12:45,2285,978,,,393\n2025-01-01 00:13:00,2302,1000,,,398\n2025-01-01 00:13:15,2335,1000,,,401\n2025-01-01 00:13:30,2354,1000,,,403\n2025-01-01 00:13:45,2375,1000,,,406\n2025-01-01 00:14:00,2398,716,,,407\n2025-01-01 00:14:15,2421,213,,,407\n2025-01-01 00:14:30,2046,,,,\n2025-01-01 00:14:45,1449,,,,\n2025-01-01 00:15:00,833,,,,\n2025-01-01 00:15:15,20.5,,,,\n",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "${DS_YESOREYERAM-INFINITY-DATASOURCE}"
+          },
+          "filters": [],
+          "format": "table",
+          "global_query_id": "",
+          "parser": "backend",
+          "refId": "4-Indexes",
+          "root_selector": "",
+          "source": "inline",
+          "type": "csv",
+          "url": "https://github.com/IggyCloud/resources/blob/main/evidence/0-baseline/read/data/read-1st-normalized.csv",
+          "url_options": {
+            "data": "",
+            "method": "GET"
+          }
+        }
+      ],
+      "title": "Write Data",
+      "type": "timeseries"
     }
+  ],
+  "preload": false,
+  "schemaVersion": 42,
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "2024-12-31T23:59:40.641Z",
+    "to": "2025-01-01T00:13:31.996Z"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Read + Write Comparing Dashboard",
+  "uid": "adc6q98",
+  "version": 26,
+  "weekStart": ""
+}
